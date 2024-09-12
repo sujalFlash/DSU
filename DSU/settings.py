@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dicom_communication'
+    'dicom_communication',
+    'pacs_server',
+    'pacs_archive',
 ]
 
 MIDDLEWARE = [
