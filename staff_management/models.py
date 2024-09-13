@@ -27,7 +27,7 @@ class Doctor(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="doctors")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='free')
     shift = models.CharField(max_length=20, choices=SHIFT_CHOICES, default='Day')
-
+    on_duty=models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
@@ -49,7 +49,8 @@ class StaffMember(models.Model):
     departments = models.ManyToManyField(Department, related_name="staff_members")  # Multiple departments
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="staff_members")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='free')
-
+    is_in_hospital = models.BooleanField(default=False)
+    on_duty=models.BooleanField(default=False)
     class Meta:
         unique_together = ('name', 'hospital', 'role')
 
@@ -73,3 +74,15 @@ class CleaningStaff(StaffMember):
 
     def __str__(self):
         return f"Cleaner: {self.name}"
+
+class ProjectManager(models.Model):
+    name = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=15)
+    staff_members = models.ManyToManyField(StaffMember, through='ProjectAssignment')
+
+class ProjectAssignment(models.Model):
+    staff_member = models.ForeignKey(StaffMember, on_delete=models.CASCADE)
+    project_manager = models.ForeignKey(ProjectManager, on_delete=models.CASCADE)
+    project_name = models.CharField(max_length=100)
+    assigned_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField(null=True, blank=True)
