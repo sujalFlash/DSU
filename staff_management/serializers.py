@@ -35,7 +35,7 @@ class CleaningStaffSerializer(StaffMemberSerializer):
     class Meta:
         model = CleaningStaff
         fields = StaffMemberSerializer.Meta.fields + ['area_assigned']
-'''
+
 class WorkManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkManager
@@ -48,4 +48,3 @@ class WorkAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkAssignment
         fields = ['id', 'staff_member', 'work_manager', 'work_name', 'assigned_date', 'end_date']
-'''

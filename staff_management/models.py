@@ -1,6 +1,6 @@
 from django.db import models
 from hospital_management.models import Hospital
-
+from django.contrib.auth.models import AbstractUser
 class Department(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
@@ -8,8 +8,10 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
-
+class CustomUser(AbstractUser):
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='users', null=True, blank=True)
 class Doctor(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='doctor_profile',default=1)
     STATUS_CHOICES = [
         ('free', 'Free'),
         ('consulting', 'Consulting'),
@@ -32,6 +34,7 @@ class Doctor(models.Model):
         return self.name
 
 class StaffMember(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='staff_member',default=1)
     employee_id = models.CharField(max_length=10, unique=True,default="not_assigned")
     name = models.CharField(max_length=255)
     role = models.CharField(max_length=255)
@@ -76,6 +79,7 @@ class CleaningStaff(StaffMember):
         return f"Cleaner: {self.name}"
 
 class WorkManager(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='manager',default=1)
     name = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=15)
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="work_manager",default=1)
@@ -84,6 +88,7 @@ class WorkManager(models.Model):
         return f"{self.name}"
 
 class WorkAssignment(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='work',default=1)
     staff_member = models.ForeignKey(StaffMember, on_delete=models.CASCADE)
     work_manager = models.ForeignKey(WorkManager, on_delete=models.CASCADE)
     work_name = models.CharField(max_length=100)

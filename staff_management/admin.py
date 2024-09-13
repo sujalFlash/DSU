@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Doctor,StaffMember,ReceptionStaff,NursingStaff,CleaningStaff,Department,WorkManager,WorkAssignment
+from .models import CustomUser
 admin.site.register(Department)
 admin.site.register(Doctor)
 admin.site.register(StaffMember)
@@ -10,3 +11,4 @@ admin.site.register(CleaningStaff)
 admin.site.register(WorkManager)
 admin.site.register(WorkAssignment)
 
+admin.site.register(CustomUser)
