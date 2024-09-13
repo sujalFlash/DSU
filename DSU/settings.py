@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'dicom_communication',
     'pacs_server',
     'pacs_archive',
+    'patient_management',
+    'hospital_management'
 ]
 
 MIDDLEWARE = [
