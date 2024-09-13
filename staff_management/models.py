@@ -82,6 +82,7 @@ class WorkManager(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='manager',default=1)
     name = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=15)
+    role=models.CharField(max_length=100,default='manager')
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="work_manager",default=1)
     staff_members = models.ManyToManyField(StaffMember, through='WorkAssignment')
     def __str__(self):
