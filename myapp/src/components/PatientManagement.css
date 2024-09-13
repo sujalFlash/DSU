@@ -1,0 +1,173 @@
+/* src/components/PatientManagement.css */
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.patient-management-container::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* Optional: just to make sure the scrollbar is invisible */
+  }
+  
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .patient-management-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto; /* Enable vertical scroll */
+  }
+  
+  .patient-management-container {
+    margin: 40px;
+    position: relative;
+    max-height: 100vh; /* Ensure the container doesn't exceed the screen height */
+    overflow-y: auto; /* Enable scrolling for overflowing content */
+  }
+  
+  .pm-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 45px;
+  }
+  
+  .pm-create-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #00ffcc;
+    color: #0b0e23;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pm-create-btn:hover {
+    background-color: #00bfa5;
+  }
+  
+  .pm-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 100px;
+  }
+  
+  .pm-table th, .pm-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .pm-table th {
+    background-color: #00ffcc;
+  }
+  
+  .pm-btn {
+    background-color: #00ffcc;
+    color: #0b0e23;
+    border: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 25px;
+  }
+  
+  .pm-btn:hover {
+    background-color: #00bfa5;
+  }
+/* Modal styling */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* A soft shadow for the modal */
+  z-index: 1000;
+  width: 400px; /* Slightly smaller size for the modal */
+  border-radius: 10px; /* Rounded corners for the modal */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Remove scrollbar */
+  height: 550px;
+  margin-bottom: 10px;
+}
+
+.modal h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #055c9d; /* Header in dark blue to match overall theme */
+  margin-top: 15px;
+}
+
+.modal-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align content to center on X-axis */
+}
+
+.forms {
+  width: 100%;
+}
+
+.modal form div {
+  margin-bottom: 10px; /* Reduced gap between input boxes */
+  width: 100%;
+}
+
+.modal input {
+  width: 80%;
+  padding: 8px; /* Reduced padding for a smaller look */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;;
+  display: block;
+  text-align: center; /* Center input text */
+}
+
+.modal button {
+  padding: 6px 15px; /* Smaller button size */
+  background-color:  #00ffcc; /* Green color for the buttons */
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal button:hover {
+  background-color:  #00bfa5; /* Darker green on hover */
+}
+
+/* Align buttons to the right in the modal */
+.modal .modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 15px;
+}
+.size{
+  margin: 0 auto;
+  margin-bottom: -10px;
+}
+.sc-btn{
+ margin-top: 20px;
+ margin-bottom: 20px;
+}
+.modal{
+  margin-top: -1rem;
+}
+.modal form label {
+  display: block;
+  font-size: 16px; /* Adjust font size */
+  color: #044475; /* Dark blue color for labels */
+  margin-bottom: 5px; /* Space between label and input */
+  text-align: left; /* Align labels to the left */
+  width: 100%; /* Ensure labels take full width */
+  margin-left: 20px;
+}
