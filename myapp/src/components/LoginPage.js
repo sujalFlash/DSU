@@ -12,8 +12,8 @@ const LoginPage = () => {
     e.preventDefault(); // Prevent default form submission behavior
 
     // Simulate login credentials
-    const validEmail = 'user@example.com';
-    const validPassword = 'password123';
+    const validEmail = 'sujalflash@gmail.com';
+    const validPassword = 'sujalShivani';
 
     if (email === validEmail && password === validPassword) {
       navigate('/dashboard'); // Redirect to Dashboard

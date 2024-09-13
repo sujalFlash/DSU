@@ -7,8 +7,7 @@ import Dashboard from './components/Dashboard';
 import StaffManagement from './components/StaffManagement';
 import ImageManagement from './components/ImageManagement';
 import PatientManagement from './components/PatientManagement';
-import AuditAndLogs from './components/AuditAndLogs'; 
-import Settings from './components/Settings';
+
 
 
 function App() {
@@ -22,8 +21,6 @@ function App() {
         <Route path="/staff-management" element={<StaffManagement />} />
         <Route path="/image-management" element={<ImageManagement />} />
         <Route path="/patient-management" element={<PatientManagement />} />
-        <Route path="/audit-and-logs" element={<AuditAndLogs />} />
-        <Route path="/settings" element={<Settings />} />
       </Routes>
     </Router>
   );
