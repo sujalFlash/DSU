@@ -4,7 +4,7 @@ import numpy as np
 
 # Full path of the DICOM file
 base = r"C:\Users\sujal\PycharmProjects\DSU\dicom_communication"
-pass_dicom = "test2.dcm"
+pass_dicom = "0.dcm"
 
 # Reading the DICOM file
 filename = base + "\\" + pass_dicom
