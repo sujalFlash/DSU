@@ -21,6 +21,8 @@ class Patient(models.Model):
     gender = models.CharField(max_length=1, choices=GenderChoices.choices, default=GenderChoices.MALE)
     disease_detected = models.BooleanField(default=False)
     diseases = models.ManyToManyField(Disease, through='DiseaseHistory')
+    is_admitted=models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.name
@@ -29,24 +31,35 @@ class Patient(models.Model):
         return "Yes" if self.disease_detected else "No"
 import os
 from django.conf import settings
+
+
+class SeverityChoices(models.TextChoices):
+    MILD = 'M', 'Mild'
+    MODERATE = 'MO', 'Moderate'
+    SEVERE = 'S', 'Severe'
+
+
 class DiseaseHistory(models.Model):
     STATUS_CHOICES = [
         ('active', 'Active'),
         ('healed', 'Healed'),
     ]
 
+    SEVERITY_CHOICES = SeverityChoices.choices
+
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='disease_history')
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE, related_name='disease_history')
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='disease_history')  # Link to Hospital
     date_diagnosed = models.DateField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')  # New field for disease status
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')  # Disease status
+    severity = models.CharField(max_length=2, choices=SEVERITY_CHOICES,
+                                default=SeverityChoices.MILD)  # New field for severity
 
     def __str__(self):
-        return f"{self.disease.name} (Patient: {self.patient.name}, Hospital: {self.hospital.name})"
-
+        return f"{self.disease.name} (Patient: {self.patient.name}, Hospital: {self.hospital.name}, Severity: {self.get_severity_display()})"
 
     def get_image_path(self):
-            # Returns the absolute path of the image file
+        # Returns the absolute path of the image file
         return os.path.join(settings.MEDIA_ROOT, self.image_file.name)
 
 

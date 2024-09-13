@@ -1,0 +1,9 @@
+from django.contrib import admin
+from .models import Doctor,StaffMember,ReceptionStaff,NursingStaff,CleaningStaff,Department
+admin.site.register(Department)
+admin.site.register(Doctor)
+admin.site.register(StaffMember)
+admin.site.register(ReceptionStaff)
+admin.site.register(NursingStaff)
+admin.site.register(CleaningStaff)
+

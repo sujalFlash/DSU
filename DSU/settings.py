@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'pacs_server',
     'pacs_archive',
     'patient_management',
-    'hospital_management'
+    'hospital_management',
+    'staff_management',
 ]
 
 MIDDLEWARE = [
