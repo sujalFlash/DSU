@@ -1,19 +1,12 @@
 from django.urls import path
-from .rest_view import DoctorListCreateView, DoctorDetailView
-from .rest_view import NursingStaffListCreateView, NursingStaffDetailView
-from .rest_view import ReceptionStaffListCreateView, ReceptionStaffDetailView
-from .rest_view import CleaningStaffListCreateView, CleaningStaffDetailView
-
+from .rest_view import create_department_api,list_departments_by_hospital_api
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 urlpatterns = [
-    path('doctors/', DoctorListCreateView.as_view(), name='doctor-list-create'),
-    path('doctors/<int:pk>/', DoctorDetailView.as_view(), name='doctor-detail'),
-
-    path('nursing_staff/', NursingStaffListCreateView.as_view(), name='nursing-staff-list-create'),
-    path('nursing_staff/<int:pk>/', NursingStaffDetailView.as_view(), name='nursing-staff-detail'),
-
-    path('reception_staff/', ReceptionStaffListCreateView.as_view(), name='reception-staff-list-create'),
-    path('reception_staff/<int:pk>/', ReceptionStaffDetailView.as_view(), name='reception-staff-detail'),
-
-    path('cleaning_staff/', CleaningStaffListCreateView.as_view(), name='cleaning-staff-list-create'),
-    path('cleaning_staff/<int:pk>/', CleaningStaffDetailView.as_view(), name='cleaning-staff-detail'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/create-department/', create_department_api, name='create_department_api'),
+path('departments/', list_departments_by_hospital_api, name='list_departments_by_hospital'),
 ]

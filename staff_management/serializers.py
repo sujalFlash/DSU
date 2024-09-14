@@ -1,11 +1,24 @@
 # staff/serializers.py
 from rest_framework import serializers
 from .models import  Department,Doctor, StaffMember, NursingStaff, ReceptionStaff, CleaningStaff, WorkManager, WorkAssignment
-
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'hospital']
+        read_only_fields = ['hospital']  # Make hospital read-only to prevent modification from client side
+
+    def create(self, validated_data):
+        # Extract the hospital from the request context
+        request = self.context.get('request')
+        if request and request.user and hasattr(request.user, 'manager'):
+            work_manager = request.user.manager.first()
+            hospital = work_manager.hospital
+        else:
+            # Default or handle if there's no valid work manager, though it should always be present
+            raise serializers.ValidationError("WorkManager instance not found or user is not authenticated.")
+
+        # Create the department with the hospital field set
+        return Department.objects.create(hospital=hospital, **validated_data)
 
 class DoctorSerializer(serializers.ModelSerializer):
     departments = DepartmentSerializer(many=True, read_only=True)
