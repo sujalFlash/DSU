@@ -31,6 +31,7 @@ Django==5.0
 django-browser-reload==1.13.0
 django-cors-headers==4.3.1
 djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
 executing==2.0.1
 fastjsonschema==2.19.1
 filelock==3.13.1
