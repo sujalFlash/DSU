@@ -97,4 +97,5 @@ class WorkAssignment(models.Model):
     assigned_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
     def __str__(self):
-        return f"{self.work_name}"
+        return f"{self.work_manager}:+{self.work_name}:{self.staff_member} start date:{self.assigned_date} end date:{self.end_date}"
+
