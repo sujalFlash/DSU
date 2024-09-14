@@ -11,7 +11,7 @@ class Department(models.Model):
 class CustomUser(AbstractUser):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='users', null=True, blank=True)
 class Doctor(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='doctor_profile',default=1)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='doctor_profile')
     STATUS_CHOICES = [
         ('free', 'Free'),
         ('consulting', 'Consulting'),
@@ -34,7 +34,7 @@ class Doctor(models.Model):
         return self.name
 
 class StaffMember(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='staff_member',default=1)
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='staff_member')
     employee_id = models.CharField(max_length=10, unique=True,default="not_assigned")
     name = models.CharField(max_length=255)
     role = models.CharField(max_length=255)
@@ -79,21 +79,21 @@ class CleaningStaff(StaffMember):
         return f"Cleaner: {self.name}"
 
 class WorkManager(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='manager',default=1)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='manager')
     name = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=15)
     role=models.CharField(max_length=100,default='manager')
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="work_manager",default=1)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="work_manager")
     staff_members = models.ManyToManyField(StaffMember, through='WorkAssignment')
     def __str__(self):
         return f"{self.name}"
 
 class WorkAssignment(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='work',default=1)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='work')
     staff_member = models.ForeignKey(StaffMember, on_delete=models.CASCADE)
     work_manager = models.ForeignKey(WorkManager, on_delete=models.CASCADE)
     work_name = models.CharField(max_length=100)
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="work_assignments",default=1)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="work_assignments")
     assigned_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
     def __str__(self):

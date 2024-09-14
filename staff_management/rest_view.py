@@ -1,103 +1,42 @@
-from rest_framework import generics
-from .models import Doctor, NursingStaff, ReceptionStaff, CleaningStaff
-from .serializers import DoctorSerializer, NursingStaffSerializer, ReceptionStaffSerializer, CleaningStaffSerializer
-from .permissions import HospitalPermission, IsSuperiorOrManager
-
-# Doctor Views
-class DoctorListCreateView(generics.ListCreateAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
-    permission_classes = [HospitalPermission, IsSuperiorOrManager]
-
-    def get_queryset(self):
-        # Filter doctors based on the user's hospital
-        user = self.request.user
-        hospital = user.doctor_profile.hospital if hasattr(user, 'doctor_profile') else user.staff_member.hospital
-        return Doctor.objects.filter(hospital=hospital)
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.exceptions import PermissionDenied
+from .models import Department, WorkManager,Hospital
+from .serializers import DepartmentSerializer
+from .permissions import IsHospitalManager
 
 
-class DoctorDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
-    permission_classes = [HospitalPermission]
+@api_view(['POST'])
+@permission_classes([IsHospitalManager])
+def create_department_api(request):
+    if request.method == 'POST':
+        serializer = DepartmentSerializer(data=request.data, context={'request': request})
 
-    def get_object(self):
-        # Ensure that the object belongs to the hospital of the requesting user
-        user = self.request.user
-        hospital = user.doctor_profile.hospital if hasattr(user, 'doctor_profile') else user.staff_member.hospital
-        return Doctor.objects.get(pk=self.kwargs['pk'], hospital=hospital)
-
-
-# NursingStaff Views
-class NursingStaffListCreateView(generics.ListCreateAPIView):
-    queryset = NursingStaff.objects.all()
-    serializer_class = NursingStaffSerializer
-    permission_classes = [HospitalPermission, IsSuperiorOrManager]
-
-    def get_queryset(self):
-        # Filter nursing staff based on the user's hospital
-        user = self.request.user
-        hospital = user.staff_member.hospital if hasattr(user, 'staff_member') else user.doctor_profile.hospital
-        return NursingStaff.objects.filter(hospital=hospital)
+        if serializer.is_valid():
+            serializer.save()  # Hospital is set within the serializer
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class NursingStaffDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = NursingStaff.objects.all()
-    serializer_class = NursingStaffSerializer
-    permission_classes = [HospitalPermission]
+@api_view(['GET'])
+def list_departments_by_hospital_api(request):
+    """
+    List all departments grouped by their associated hospitals.
+    """
+    if request.method != 'GET':
+        return Response({"detail": "Method not allowed."}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_object(self):
-        # Ensure that the object belongs to the hospital of the requesting user
-        user = self.request.user
-        hospital = user.staff_member.hospital if hasattr(user, 'staff_member') else user.doctor_profile.hospital
-        return NursingStaff.objects.get(pk=self.kwargs['pk'], hospital=hospital)
+    hospitals = Hospital.objects.all()  # Get all hospitals
+    data = []
 
+    for hospital in hospitals:
+        departments = Department.objects.filter(hospital=hospital)  # Get departments for each hospital
+        serializer = DepartmentSerializer(departments, many=True)  # Serialize the list of departments
+        data.append({
+            'hospital': hospital.name,  # Assuming hospital model has a 'name' field
+            'departments': serializer.data  # Attach the serialized departments
+        })
 
-# ReceptionStaff Views
-class ReceptionStaffListCreateView(generics.ListCreateAPIView):
-    queryset = ReceptionStaff.objects.all()
-    serializer_class = ReceptionStaffSerializer
-    permission_classes = [HospitalPermission, IsSuperiorOrManager]
-
-    def get_queryset(self):
-        # Filter reception staff based on the user's hospital
-        user = self.request.user
-        hospital = user.staff_member.hospital if hasattr(user, 'staff_member') else user.doctor_profile.hospital
-        return ReceptionStaff.objects.filter(hospital=hospital)
-
-
-class ReceptionStaffDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ReceptionStaff.objects.all()
-    serializer_class = ReceptionStaffSerializer
-    permission_classes = [HospitalPermission]
-
-    def get_object(self):
-        # Ensure that the object belongs to the hospital of the requesting user
-        user = self.request.user
-        hospital = user.staff_member.hospital if hasattr(user, 'staff_member') else user.doctor_profile.hospital
-        return ReceptionStaff.objects.get(pk=self.kwargs['pk'], hospital=hospital)
-
-
-# CleaningStaff Views
-class CleaningStaffListCreateView(generics.ListCreateAPIView):
-    queryset = CleaningStaff.objects.all()
-    serializer_class = CleaningStaffSerializer
-    permission_classes = [HospitalPermission, IsSuperiorOrManager]
-
-    def get_queryset(self):
-        # Filter cleaning staff based on the user's hospital
-        user = self.request.user
-        hospital = user.staff_member.hospital if hasattr(user, 'staff_member') else user.doctor_profile.hospital
-        return CleaningStaff.objects.filter(hospital=hospital)
-
-
-class CleaningStaffDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CleaningStaff.objects.all()
-    serializer_class = CleaningStaffSerializer
-    permission_classes = [HospitalPermission]
-
-    def get_object(self):
-        # Ensure that the object belongs to the hospital of the requesting user
-        user = self.request.user
-        hospital = user.staff_member.hospital if hasattr(user, 'staff_member') else user.doctor_profile.hospital
-        return CleaningStaff.objects.get(pk=self.kwargs['pk'], hospital=hospital)
+    return Response(data, status=status.HTTP_200_OK)  # Return the structured data with a 200 OK status
