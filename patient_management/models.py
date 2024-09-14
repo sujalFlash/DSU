@@ -46,14 +46,13 @@ class DiseaseHistory(models.Model):
     ]
 
     SEVERITY_CHOICES = SeverityChoices.choices
-
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='disease_history')
-    disease = models.ForeignKey(Disease, on_delete=models.CASCADE, related_name='disease_history')
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='disease_history')  # Link to Hospital
-    date_diagnosed = models.DateField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')  # Disease status
-    severity = models.CharField(max_length=2, choices=SEVERITY_CHOICES,
-                                default=SeverityChoices.MILD)  # New field for severity
+    patient =models.ForeignKey(Patient,on_delete=models.CASCADE, related_name='disease_history')
+    disease =models.ForeignKey(Disease,on_delete=models.CASCADE, related_name='disease_history')
+    hospital=models.ForeignKey(Hospital,on_delete=models.CASCADE, related_name='disease_history')
+    date_diagnosed=models.DateField()
+    status=models.CharField(max_length=10,choices=STATUS_CHOICES, default='active')
+    severity=models.CharField(max_length=2, choices=SEVERITY_CHOICES,
+                                default=SeverityChoices.MILD)
 
     def __str__(self):
         return f"{self.disease.name} (Patient: {self.patient.name}, Hospital: {self.hospital.name}, Severity: {self.get_severity_display()})"

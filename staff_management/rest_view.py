@@ -4,7 +4,7 @@ from rest_framework import status
 from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager,Hospital
 from .serializers import DepartmentSerializer
-from .permissions import IsHospitalManager
+from .permissions import IsHospitalManager,IsDoctor
 
 
 @api_view(['POST'])
@@ -38,5 +38,4 @@ def list_departments_by_hospital_api(request):
             'hospital': hospital.name,  # Assuming hospital model has a 'name' field
             'departments': serializer.data  # Attach the serialized departments
         })
-
     return Response(data, status=status.HTTP_200_OK)  # Return the structured data with a 200 OK status

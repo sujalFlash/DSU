@@ -1,10 +1,6 @@
 from rest_framework.permissions import BasePermission
 from .models import WorkManager
-
-
-
 from rest_framework.permissions import BasePermission
-
 class IsHospitalManager(BasePermission):
     def has_object_permission(self, request, view, obj):
         # Ensure the user is authenticated
@@ -34,3 +30,6 @@ class IsHospitalManager(BasePermission):
 
         return has_permission
 
+class IsDoctor(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and hasattr(request.user, 'doctor_profile')
