@@ -1,5 +1,5 @@
 from django.urls import path
-from .rest_view import create_department_api,list_departments_by_hospital_api,create_doctor
+from .rest_view import create_department_api, list_departments_by_hospital_api, create_doctor
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,

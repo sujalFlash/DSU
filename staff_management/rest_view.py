@@ -8,6 +8,7 @@ from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 
 
 
+
 @api_view(['POST'])
 @permission_classes([IsHospitalManager])
 def create_department_api(request):

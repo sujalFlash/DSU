@@ -128,8 +128,6 @@ class WorkManager(models.Model):
     def save(self, *args, **kwargs):
         # Save the instance first so that it gets an ID and can be used in M2M relationships
         super().save(*args, **kwargs)
-
-        # Now it's safe to access the departments many-to-many field
         for department in self.departments.all():
             if department.hospital != self.hospital:
                 raise ValidationError(
