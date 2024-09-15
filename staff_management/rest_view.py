@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager,Hospital
-from .serializers import DepartmentSerializer
-from .permissions import IsHospitalManager,IsDoctor
+from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer
+from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
+
 
 
 @api_view(['POST'])
@@ -39,3 +40,23 @@ def list_departments_by_hospital_api(request):
             'departments': serializer.data  # Attach the serialized departments
         })
     return Response(data, status=status.HTTP_200_OK)  # Return the structured data with a 200 OK status
+
+
+@api_view(['POST'])
+@permission_classes([IsManagerOrSuperuser])
+def create_doctor(request):
+    user = request.user
+
+    if hasattr(user, 'manager'):
+        hospital = user.manager.hospital  # Get the hospital associated with the manager
+    else:
+        return Response({"detail": "User is not associated with any hospital."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Pass hospital in the serializer context
+    serializer = DoctorCreateSerializer(data=request.data, context={'hospital': hospital})
+
+    if serializer.is_valid():
+        serializer.save()  # Now hospital is available in the serializer context
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

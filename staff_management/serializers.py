@@ -26,7 +26,6 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = ['employee_id', 'name', 'specialization', 'departments', 'hospital', 'status', 'shift']
-
 class StaffMemberSerializer(serializers.ModelSerializer):
     departments = DepartmentSerializer(many=True, read_only=True)
 
@@ -61,3 +60,30 @@ class WorkAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkAssignment
         fields = ['id', 'staff_member', 'work_manager', 'work_name', 'assigned_date', 'end_date']
+
+
+class DoctorCreateSerializer(serializers.ModelSerializer):
+    departments = serializers.PrimaryKeyRelatedField(
+        queryset=Department.objects.all(),
+        many=True
+    )
+
+    class Meta:
+        model = Doctor
+        fields = ['employee_id', 'name', 'specialization', 'departments']
+
+    def validate_employee_id(self, value):
+        if Doctor.objects.filter(employee_id=value).exists():
+            raise serializers.ValidationError("An employee with this ID already exists.")
+        return value
+
+    def create(self, validated_data):
+        departments = validated_data.pop('departments')
+        # Use .get() to avoid KeyError and handle the case where 'hospital' is not present
+        hospital = self.context.get('hospital')
+        if not hospital:
+            raise serializers.ValidationError("Hospital is required to create a doctor.")
+
+        doctor = Doctor.objects.create(hospital=hospital, **validated_data)
+        doctor.departments.set(departments)
+        return doctor

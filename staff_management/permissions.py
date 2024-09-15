@@ -33,3 +33,6 @@ class IsHospitalManager(BasePermission):
 class IsDoctor(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and hasattr(request.user, 'doctor_profile')
+class IsManagerOrSuperuser(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and (request.user.is_superuser or hasattr(request.user, 'manager'))
