@@ -90,6 +90,17 @@ class DoctorCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("The specified user does not exist.")
         return value
 
+    def validate_departments(self, value):
+        # Get the authenticated user
+        auth_user = self.context['request'].user
+        hospital = auth_user.hospital
+
+        # Check each department to ensure it belongs to the same hospital
+        for department in value:
+            if department.hospital != hospital:
+                raise serializers.ValidationError(f"Department {department.id} does not belong to your hospital.")
+
+        return value
     def create(self, validated_data):
         departments = validated_data.pop('departments')
 
