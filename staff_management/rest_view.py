@@ -5,8 +5,8 @@ from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager,Hospital
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
-
-
+from .models import Doctor
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['POST'])
@@ -61,3 +61,20 @@ def create_doctor(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Ensure the user is authenticated
+def view_doctors(request):
+    # Get the authenticated user
+    auth_user = request.user
+
+    # Ensure the user has a hospital assigned
+    if not auth_user.hospital:
+        return Response({"error": "User does not belong to any hospital."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Query doctors associated with the user's hospital
+    doctors = Doctor.objects.filter(hospital=auth_user.hospital)
+
+    # Serialize the doctor data
+    serializer = DoctorSerializer(doctors, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
