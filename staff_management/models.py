@@ -1,8 +1,9 @@
+from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from hospital_management.models import Hospital
-
+from django.contrib.auth.hashers import make_password
 # Department Model
 class Department(models.Model):
     name = models.CharField(max_length=255)
@@ -19,6 +20,12 @@ class Department(models.Model):
 # CustomUser Model
 class CustomUser(AbstractUser):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='users', null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Hash the password before saving
+        if self.pk is None:  # This means it's a new user
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
 
     def clean(self):
         # Ensure that a user can only have one of the following roles: Staff Member or Work Manager.
