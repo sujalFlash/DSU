@@ -54,7 +54,7 @@ def create_doctor(request):
         return Response({"detail": "User is not associated with any hospital."}, status=status.HTTP_400_BAD_REQUEST)
 
     # Pass hospital in the serializer context
-    serializer = DoctorCreateSerializer(data=request.data, context={'hospital': hospital})
+    serializer = DoctorCreateSerializer(data=request.data, context={'hospital': hospital,'request':request})
 
     if serializer.is_valid():
         serializer.save()  # Now hospital is available in the serializer context

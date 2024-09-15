@@ -1,6 +1,6 @@
 # staff/serializers.py
 from rest_framework import serializers
-from .models import  Department,Doctor, StaffMember, NursingStaff, ReceptionStaff, CleaningStaff, WorkManager, WorkAssignment
+from .models import  Department,Doctor, StaffMember, NursingStaff, ReceptionStaff, CleaningStaff, WorkManager, WorkAssignment,CustomUser
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
@@ -63,27 +63,45 @@ class WorkAssignmentSerializer(serializers.ModelSerializer):
 
 
 class DoctorCreateSerializer(serializers.ModelSerializer):
+    print("sujal")
     departments = serializers.PrimaryKeyRelatedField(
         queryset=Department.objects.all(),
         many=True
     )
+    user_id = serializers.IntegerField(write_only=True, required=False)  # Optional, based on your requirements
 
     class Meta:
         model = Doctor
-        fields = ['employee_id', 'name', 'specialization', 'departments']
+        fields = ['user_id', 'employee_id', 'name', 'specialization', 'departments']
 
     def validate_employee_id(self, value):
         if Doctor.objects.filter(employee_id=value).exists():
             raise serializers.ValidationError("An employee with this ID already exists.")
         return value
 
+    def validate_user_id(self, value):
+        try:
+            user = CustomUser.objects.get(id=value)
+            # Ensure the user belongs to the same hospital as the authenticated user
+            auth_user = self.context['request'].user
+            if user.hospital != auth_user.hospital:
+                raise serializers.ValidationError("The specified user must belong to the same hospital as the authenticated user.")
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("The specified user does not exist.")
+        return value
+
     def create(self, validated_data):
         departments = validated_data.pop('departments')
-        # Use .get() to avoid KeyError and handle the case where 'hospital' is not present
-        hospital = self.context.get('hospital')
+
+        # Get the authenticated user
+        auth_user = self.context['request'].user
+
+        # Use the hospital from the authenticated user
+        hospital = auth_user.hospital
         if not hospital:
             raise serializers.ValidationError("Hospital is required to create a doctor.")
 
+        # Create the doctor, using the authenticated user's hospital
         doctor = Doctor.objects.create(hospital=hospital, **validated_data)
         doctor.departments.set(departments)
         return doctor
