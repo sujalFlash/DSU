@@ -30,4 +30,4 @@ class DiseaseHistoryUpdateSerializer(serializers.ModelSerializer):
 class DiseaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Disease
-        fields = ['id', 'name']
+        fields = ['id', 'name','hospital','facilities']

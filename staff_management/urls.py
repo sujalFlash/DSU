@@ -1,5 +1,5 @@
 from django.urls import path
-from .rest_view import create_department_api, list_departments_by_hospital_api, create_doctor,view_doctors
+from .rest_view import create_department_api, list_departments_by_hospital_api, create_doctor,view_doctors,get_user_departments
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -11,5 +11,6 @@ urlpatterns = [
     path('departments/', list_departments_by_hospital_api, name='list_departments_by_hospital'),
     path('doctors_create/', create_doctor, name='create_doctor'),
     path('view_doctors/',view_doctors,name='view_doctors'),
+    path('api/view_department/',get_user_departments,name='get_user_departments')
 
 ]

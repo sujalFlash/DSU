@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager,Hospital
-from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer
+from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer,ListDepartmentSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -79,3 +79,16 @@ def view_doctors(request):
     serializer = DoctorSerializer(doctors, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_departments(request):
+    try:
+        hospital = request.user.hospital
+        departments = Department.objects.filter(hospital=hospital)
+        serializer = ListDepartmentSerializer(departments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except AttributeError:
+        return Response({'detail': 'User does not have an associated hospital'}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

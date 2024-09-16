@@ -104,16 +104,14 @@ class DoctorCreateSerializer(serializers.ModelSerializer):
         return value
     def create(self, validated_data):
         departments = validated_data.pop('departments')
-
-        # Get the authenticated user
         auth_user = self.context['request'].user
-
-        # Use the hospital from the authenticated user
         hospital = auth_user.hospital
         if not hospital:
             raise serializers.ValidationError("Hospital is required to create a doctor.")
-
-        # Create the doctor, using the authenticated user's hospital
         doctor = Doctor.objects.create(hospital=hospital, **validated_data)
         doctor.departments.set(departments)
         return doctor
+class ListDepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = ['id', 'name', 'description', 'hospital']
