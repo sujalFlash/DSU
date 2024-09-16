@@ -9,11 +9,14 @@ class GenderChoices(models.TextChoices):
     OTHER = 'O', 'Other'
 
 class Disease(models.Model):
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('name', 'hospital')  # Ensures name + hospital combination is unique
 
     def __str__(self):
-        return self.name
-
+        return f"{self.name}:{self.hospital}"
 class Patient(models.Model):
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()

@@ -54,12 +54,15 @@ class StaffMember(models.Model):
     on_duty = models.BooleanField(default=False)
 
     def clean(self):
-        # Ensure that StaffMember's hospital matches the hospital of assigned departments
-        if self.pk:  # Check if the instance is saved
+        super().clean()
+        if self.pk:
+            user_hospital_departments = self.hospital.departments.all()
+
             for department in self.departments.all():
-                if department.hospital != self.hospital:
+                # Ensure the department's hospital matches the CleaningStaff's hospital
+                if department not in user_hospital_departments:
                     raise ValidationError(
-                        f"Staff member's hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
+                        f"Staff hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
                     )
 
     class Meta:
@@ -74,23 +77,33 @@ class Doctor(StaffMember):
     specialization = models.CharField(max_length=255)
 
     def clean(self):
-        super().clean()  # Call the parent clean method
-
-        # Check if the instance has an ID (is saved to the database)
         if self.pk:
-            for department in self.departments.all():
-                if department.hospital != self.hospital:
-                    raise ValidationError(
-                        f"Doctor's hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
-                    )
+            user_hospital_departments = self.hospital.departments.all()
 
+            for department in self.departments.all():
+                # Ensure the department's hospital matches the CleaningStaff's hospital
+                if department not in user_hospital_departments:
+                    raise ValidationError(
+                        f"Doctor hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
+                    )
     def __str__(self):
-        return self.name
+          return f"{self.name}:{self.specialization}:{self.hospital}"
 
 
 # NursingStaff Model (inherits from StaffMember)
 class NursingStaff(StaffMember):
     qualifications = models.CharField(max_length=255, null=True, blank=True)
+    def clean(self):
+        super().clean()
+        if self.pk:
+            user_hospital_departments = self.hospital.departments.all()
+
+            for department in self.departments.all():
+                # Ensure the department's hospital matches the CleaningStaff's hospital
+                if department not in user_hospital_departments:
+                    raise ValidationError(
+                        f"Nurse hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
+                    )
 
     def __str__(self):
         return f"Nurse: {self.name}"
@@ -99,6 +112,17 @@ class NursingStaff(StaffMember):
 # ReceptionStaff Model (inherits from StaffMember)
 class ReceptionStaff(StaffMember):
     desk_assigned = models.CharField(max_length=255, null=True, blank=True)
+
+    def clean(self):
+        super().clean()
+        if self.pk:
+            user_hospital_departments = self.hospital.departments.all()
+
+            for department in self.departments.all():
+                if department not in user_hospital_departments:
+                    raise ValidationError(
+                        f"Reception hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
+                    )
 
     def __str__(self):
         return f"Receptionist: {self.name}"
@@ -109,16 +133,16 @@ class CleaningStaff(StaffMember):
     area_assigned = models.CharField(max_length=255, null=True, blank=True)
 
     def clean(self):
-        super().clean()  # Call the parent clean method
-
-        # Check if the instance has an ID (is saved to the database)
         if self.pk:
+            user_hospital_departments = self.hospital.departments.all()
+
             for department in self.departments.all():
-                if department.hospital != self.hospital:
+                # Ensure the department's hospital matches the CleaningStaff's hospital
+
+                if department not in user_hospital_departments:
                     raise ValidationError(
                         f"Cleaning staff's hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
                     )
-
     def __str__(self):
         return f"Cleaner: {self.name}"
 

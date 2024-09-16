@@ -3,10 +3,6 @@ from staff_management.models import Doctor, StaffMember, WorkManager, NursingSta
 
 
 class IsDoctorOrStaffOrManagerOrNurse(BasePermission):
-    """
-    Custom permission to allow only users who are Doctors, Staff Members, Work Managers, or Nurses.
-    """
-
     def has_permission(self, request, view):
         user = request.user
 

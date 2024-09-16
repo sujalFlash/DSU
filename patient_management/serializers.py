@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DiseaseHistory
+from .models import DiseaseHistory,Disease
 
 class DiseaseHistorySerializer(serializers.ModelSerializer):
     patient_name = serializers.CharField(source='patient.name', read_only=True)
@@ -27,3 +27,7 @@ class DiseaseHistoryUpdateSerializer(serializers.ModelSerializer):
         if value not in valid_severities:
             raise serializers.ValidationError("Invalid severity. Choose a valid option.")
         return value
+class DiseaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Disease
+        fields = ['id', 'name']
