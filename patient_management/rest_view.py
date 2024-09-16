@@ -89,5 +89,4 @@ def create_disease(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     return Response({'detail': 'Only doctors or work managers can create diseases.'}, status=status.HTTP_403_FORBIDDEN)
