@@ -1,0 +1,86 @@
+import React, { useState } from 'react';
+import './CreateDepartment.css';
+
+// Function to get access token from localStorage
+const getAccessToken = () => {
+  return localStorage.getItem('accessToken');
+};
+
+const CreateDepartment = () => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const departmentData = {
+      name: name,
+      description: description,
+    };
+
+    console.log('Submitting department data:', departmentData); // Debug statement
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/create-department/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`, // Include access token
+        },
+        body: JSON.stringify(departmentData), // Send the form data in JSON format
+      });
+
+      console.log('Response status:', response.status); // Debug statement
+      console.log('Response headers:', response.headers); // Debug statement
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Department created successfully:', data); // Debug statement
+        // Reset the form after successful submission
+        setName('');
+        setDescription('');
+        alert('Department created successfully!');
+      } else {
+        const errorData = await response.json();
+        console.log('Error response data:', errorData); // Debug statement
+        alert(`Error: ${errorData.detail || 'Failed to create department'}`);
+      }
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
+
+  return (
+    <div className="create-department-container">
+      <div className="dept">
+        <h1>Create Department</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <input
+              type="text"
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="submit-btn">Create</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CreateDepartment;

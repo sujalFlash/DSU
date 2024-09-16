@@ -159,5 +159,6 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000',  # The default port for create-react-app
+     'http://localhost:3000',
+    'http://localhost:3001', # The default port for create-react-app
 ]

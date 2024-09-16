@@ -1,24 +1,36 @@
-import React, { useState } from 'react'; // Import useState from React
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import './LoginPage.css'; // Import CSS for styling
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './LoginPage.css';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState(''); // State to store email input
-  const [password, setPassword] = useState(''); // State to store password input
-  const navigate = useNavigate(); // Hook to programmatically navigate
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  // Function to handle form submission
-  const handleLogin = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-    // Simulate login credentials
-    const validEmail = 'sujalflash@gmail.com';
-    const validPassword = 'sujalShivani';
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/token/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (email === validEmail && password === validPassword) {
-      navigate('/dashboard'); // Redirect to Dashboard
-    } else {
-      alert('Incorrect email or password'); // Show error message
+      if (response.ok) {
+        const data = await response.json();
+        const accessToken = data.access;
+        localStorage.setItem('accessToken', accessToken);
+        navigate('/dashboard');
+      } else {
+        const errorData = await response.json();
+        alert(`Login failed: ${errorData.detail || 'Incorrect username or password'}`);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('An error occurred. Please try again.');
     }
   };
 
@@ -27,12 +39,12 @@ const LoginPage = () => {
       <h1>Login</h1>
       <form onSubmit={handleLogin} className="login-form">
         <div className="form-group">
-          <label className='clr' htmlFor="email">Email:</label>
+          <label className='clr' htmlFor="username">Username:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>

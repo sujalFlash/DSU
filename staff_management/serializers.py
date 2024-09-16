@@ -9,9 +9,10 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Extract the hospital from the request context
+
         request = self.context.get('request')
         if request and request.user and hasattr(request.user, 'manager'):
-            work_manager = request.user.manager.first()
+            work_manager = request.user.manager
             hospital = work_manager.hospital
         else:
             # Default or handle if there's no valid work manager, though it should always be present

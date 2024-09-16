@@ -10,7 +10,7 @@ class GenderChoices(models.TextChoices):
 
 class Disease(models.Model):
     name = models.CharField(max_length=200)
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE,default=2)
 
     class Meta:
         unique_together = ('name', 'hospital')  # Ensures name + hospital combination is unique

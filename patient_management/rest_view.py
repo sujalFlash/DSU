@@ -64,19 +64,11 @@ def create_disease(request):
         print("User is reception")
     else:
         print("User is not reception")
-    doctor=Doctor()
-
-    print(f"{type(user.staff_member)}")
-    # Check if the user is a Doctor (staff_member) or WorkManager (manager)
-    if hasattr(user, 'staff_member') and isinstance(user.staff_member, Doctor):
-        # User is a doctor
-        is_doctor = True
-        user_hospital = user.staff_member.hospital  # Get the doctor's hospital
-        print(f"User is a doctor. Hospital: {user_hospital}")
-    else:
-        print(f"User is not a doctor")
-
-
+    doctor=Doctor.objects.all()
+    for each_doctor in doctor:
+        if each_doctor.user==user:
+            is_doctor=True
+            break
     if hasattr(user, 'manager'):
         # User is a manager
         is_manager = True
@@ -89,8 +81,7 @@ def create_disease(request):
     # Only allow if the user is a doctor or a manager
     if is_doctor or is_manager:
         data = request.data.copy()  # Make a mutable copy of the request data
-        data['hospital'] = user_hospital.id  # Add hospital to the data
-
+        data['hospital'] = user.hospital
         serializer = DiseaseSerializer(data=data)
 
         if serializer.is_valid():

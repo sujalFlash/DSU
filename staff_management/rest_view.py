@@ -13,8 +13,9 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsHospitalManager])
 def create_department_api(request):
     if request.method == 'POST':
+        print("Department creation is authenticated for your own hospital")
         serializer = DepartmentSerializer(data=request.data, context={'request': request})
-
+        print(serializer.is_valid())
         if serializer.is_valid():
             serializer.save()  # Hospital is set within the serializer
             return Response(serializer.data, status=status.HTTP_201_CREATED)

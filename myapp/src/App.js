@@ -1,3 +1,4 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
@@ -7,8 +8,8 @@ import Dashboard from './components/Dashboard';
 import StaffManagement from './components/StaffManagement';
 import ImageManagement from './components/ImageManagement';
 import PatientManagement from './components/PatientManagement';
-
-
+import CreateDepartment from './components/CreateDepartment';
+import ListDepartment from './components/ListDepartment'; // Import ListDepartment component
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path="/staff-management" element={<StaffManagement />} />
         <Route path="/image-management" element={<ImageManagement />} />
         <Route path="/patient-management" element={<PatientManagement />} />
+        <Route path="/create-department" element={<CreateDepartment />} />
+        <Route path="/list-department" element={<ListDepartment />} /> {/* New Route for ListDepartment */}
       </Routes>
     </Router>
   );
