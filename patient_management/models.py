@@ -57,7 +57,7 @@ class DiseaseHistory(models.Model):
     status=models.CharField(max_length=10,choices=STATUS_CHOICES, default='active')
     severity=models.CharField(max_length=2, choices=SEVERITY_CHOICES,
                                 default=SeverityChoices.MILD)
-
+    is_admitted=models.BooleanField(default=False)
     def __str__(self):
         return f"{self.disease.name} (Patient: {self.patient.name}, Hospital: {self.hospital.name}, Severity: {self.get_severity_display()})"
 

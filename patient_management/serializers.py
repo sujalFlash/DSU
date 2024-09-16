@@ -7,13 +7,13 @@ class DiseaseHistorySerializer(serializers.ModelSerializer):
     hospital_name = serializers.CharField(source='hospital.name', read_only=True)
     class Meta:
         model = DiseaseHistory
-        fields = ['id', 'patient_name', 'disease_name', 'hospital_name', 'date_diagnosed', 'status', 'severity']
+        fields = ['id', 'patient_name', 'disease_name', 'hospital_name', 'date_diagnosed', 'status', 'severity','is_admitted']
 
 
 class DiseaseHistoryUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = DiseaseHistory
-        fields = ['hospital', 'status', 'severity']  # Fields that can be updated
+        fields = ['status', 'severity','is_admitted']
 
     def validate_status(self, value):
         # Ensure that the status is either 'active' or 'healed'

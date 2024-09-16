@@ -8,18 +8,7 @@ from staff_management.permissions import IsDoctor
 from .serializers import DiseaseSerializer
 from rest_framework.permissions import IsAuthenticated
 from staff_management.models import Doctor,NursingStaff,CleaningStaff,ReceptionStaff,WorkManager
-@api_view(['GET'])
-@permission_classes([IsDoctorOrStaffOrManagerOrNurse])  # Optional: if you want to restrict this to logged-in users
-def list_disease_history_for_hospital(request):
-    user = request.user  # Get the logged-in user
-    if not hasattr(user, 'hospital'):  # Check if the user is associated with a hospital
-        return Response({"detail": "User does not belong to any hospital."}, status=status.HTTP_400_BAD_REQUEST)
 
-    hospital = user.hospital  # Assuming `hospital` is linked to the user
-    disease_histories = DiseaseHistory.objects.filter(hospital=hospital)  # Filter disease history for that hospital
-    serializer = DiseaseHistorySerializer(disease_histories, many=True)  # Serialize the data
-
-    return Response(serializer.data, status=status.HTTP_200_OK)  # Return the serialized data
 @api_view(['PATCH'])
 @permission_classes([IsDoctor])  # Only doctors are allowed to update the disease history
 def update_disease_history(request, pk):
@@ -28,11 +17,13 @@ def update_disease_history(request, pk):
     except DiseaseHistory.DoesNotExist:
         return Response({"detail": "Disease history not found."}, status=status.HTTP_404_NOT_FOUND)
     if disease_history.hospital != request.user.hospital:
+        print(disease_history.hospital)
+        print(request.user.hospital)
         return Response({"detail": "You do not have permission to update this disease history."},
                         status=status.HTTP_403_FORBIDDEN)
     serializer = DiseaseHistoryUpdateSerializer(disease_history, data=request.data, partial=True)
     if serializer.is_valid():
-        serializer.save()  # Save the updated fields
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

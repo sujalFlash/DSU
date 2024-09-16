@@ -75,7 +75,6 @@ class StaffMember(models.Model):
 # Doctor Model (inherits from StaffMember)
 class Doctor(StaffMember):
     specialization = models.CharField(max_length=255)
-
     def clean(self):
         if self.pk:
             user_hospital_departments = self.hospital.departments.all()
