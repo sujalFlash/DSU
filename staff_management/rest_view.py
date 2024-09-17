@@ -2,9 +2,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status,generics
 from django.core.exceptions import PermissionDenied
-from .models import Department, WorkManager, Hospital, NursingStaff,CustomUser
+from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
-    NursingStaffSerializer,NurseCreateSerializer
+    NursingStaffSerializer,NurseCreateSerializer,CleanerCreateSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -127,3 +127,10 @@ class DoctorCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+class CleanerCreateView(generics.CreateAPIView):
+    queryset=CleaningStaff.objects.all()
+    serializer_class=CleanerCreateSerializer
+    permission_classes = [IsAuthenticated,IsHospitalManager]
+    def perform_create(self,serializer):
+        serializer.save()
+
