@@ -163,3 +163,9 @@ CORS_ORIGIN_WHITELIST = [
      'http://localhost:3000',
     'http://localhost:3001', # The default port for create-react-app
 ]
+AUTHENTICATION_BACKENDS = [
+
+
+    'django.contrib.auth.backends.ModelBackend',
+
+]
