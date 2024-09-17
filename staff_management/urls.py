@@ -16,6 +16,6 @@ urlpatterns = [
     path('api/delete_doctor/<int:pk>/',delete_doctor,name='delete_doctor'),
     path('api/view_nurses/',view_nurses,name="view_nurses"),
     path('api/create_customUser/',CustomUserCreativeView.as_view(),name='create_customUser')
-
-
+       path('api/create_customUser/add_nurse/',add_nurses,name="add_nurses"),
+    path('api/delete_nurse/<int:pk>/',delete_nurse,name='delete_nurse'),
 ]
