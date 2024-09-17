@@ -11,6 +11,7 @@ import PatientManagement from './components/PatientManagement';
 import CreateDepartment from './components/CreateDepartment';
 import ListDepartment from './components/ListDepartment'; 
 import HospitalsPage from './components/HospitalsPage';
+import CreateUser from './components/CreateUser';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/create-department" element={<CreateDepartment />} />
         <Route path="/list-department" element={<ListDepartment />} /> 
         <Route path="/hospitals" element={<HospitalsPage />} />
+        <Route path="/create-user" element={<CreateUser />} />
       </Routes>
     </Router>
   );
