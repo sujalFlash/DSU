@@ -8,8 +8,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
         read_only_fields = ['hospital']  # Make hospital read-only to prevent modification from client side
 
     def create(self, validated_data):
-        # Extract the hospital from the request context
-
         request = self.context.get('request')
         if request and request.user and hasattr(request.user, 'manager'):
             work_manager = request.user.manager
@@ -26,13 +24,13 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ['employee_id', 'name', 'specialization', 'departments', 'hospital', 'status', 'shift']
+        fields = ['id','employee_id', 'name', 'specialization', 'departments', 'hospital', 'status', 'shift']
 class StaffMemberSerializer(serializers.ModelSerializer):
     departments = DepartmentSerializer(many=True, read_only=True)
 
     class Meta:
         model = StaffMember
-        fields = ['employee_id', 'name', 'role', 'departments', 'hospital', 'status', 'shift']
+        fields = ['user_id','id','employee_id', 'name', 'role', 'departments', 'hospital', 'status', 'shift']
 
 class NursingStaffSerializer(StaffMemberSerializer):
     class Meta:
@@ -69,7 +67,7 @@ class DoctorCreateSerializer(serializers.ModelSerializer):
         queryset=Department.objects.all(),
         many=True
     )
-    user_id = serializers.IntegerField(write_only=True, required=False)  # Optional, based on your requirements
+    user_id = serializers.IntegerField(write_only=True, required=False)
 
     class Meta:
         model = Doctor
@@ -83,7 +81,6 @@ class DoctorCreateSerializer(serializers.ModelSerializer):
     def validate_user_id(self, value):
         try:
             user = CustomUser.objects.get(id=value)
-            # Ensure the user belongs to the same hospital as the authenticated user
             auth_user = self.context['request'].user
             if user.hospital != auth_user.hospital:
                 raise serializers.ValidationError("The specified user must belong to the same hospital as the authenticated user.")
@@ -115,3 +112,16 @@ class ListDepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = ['id', 'name', 'description', 'hospital']
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CustomUser
+        fields=['id','username','password']
+        extra_kwargs={'password':{'write_only':True}}
+    def create(self,validated_data):
+        request=self.context.get('request')
+        hospital=request.user.hospital
+        password=validated_data.pop('password')
+        user=CustomUser.objects.create(hospital=hospital,**validated_data)
+        user.set_password(password)
+        user.save()
+        return user

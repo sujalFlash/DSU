@@ -1,14 +1,15 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status,generics
 from django.core.exceptions import PermissionDenied
-from .models import Department, WorkManager,Hospital
-from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer,ListDepartmentSerializer
+from .models import Department, WorkManager, Hospital, NursingStaff,CustomUser
+from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
+    NursingStaffSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
 
-
+from .serializers import CustomUserSerializer
 @api_view(['POST'])
 @permission_classes([IsHospitalManager])
 def create_department_api(request):
@@ -25,9 +26,6 @@ def create_department_api(request):
 
 @api_view(['GET'])
 def list_departments_by_hospital_api(request):
-    """
-    List all departments grouped by their associated hospitals.
-    """
     if request.method != 'GET':
         return Response({"detail": "Method not allowed."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -63,21 +61,13 @@ def create_doctor(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])  # Ensure the user is authenticated
+@permission_classes([IsAuthenticated])
 def view_doctors(request):
-    # Get the authenticated user
     auth_user = request.user
-
-    # Ensure the user has a hospital assigned
     if not auth_user.hospital:
         return Response({"error": "User does not belong to any hospital."}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Query doctors associated with the user's hospital
     doctors = Doctor.objects.filter(hospital=auth_user.hospital)
-
-    # Serialize the doctor data
     serializer = DoctorSerializer(doctors, many=True)
-
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -92,3 +82,48 @@ def get_user_departments(request):
         return Response({'detail': 'User does not have an associated hospital'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['DELETE'])
+@permission_classes([IsHospitalManager])
+def delete_doctor(request,pk):
+    try:
+        doctor=Doctor.objects.get(id=pk)
+        doctor.delete()
+        return Response({'detail':'Doc was successfull deleted'},status=status.HTTP_200_OK)
+    except Doctor.DoesNotExist:
+        return Response({'detail': 'Doc does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_nurses(request):
+    if not request.user.hospital:
+        return Response({"detail":'User does not belong to Hospital'},status=status.HTTP_400_BAD_REQUEST)
+
+    nurse=NursingStaff.objects.filter(hospital=request.user.hospital)
+    serializer=NursingStaffSerializer(nurse,many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+class CustomUserCreativeView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated,IsHospitalManager]
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'request': request})  # Pass request to serializer
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED,headers=headers)
+
+
+'''@api_view(['POST'])
+@permission_classes([IsAuthenticated,IsHospitalManager])
+def add_nurses(request):
+
+    if not request.user.hospital:
+        return Response({"detail":"User doesnot belong to Hospital"},status=status.HTTP_400_BAD_REQUEST)
+    serializer=NurseCreateSerializer(data=request.data,context={'hospital':request.user.hospital,'request':request})
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+'''
