@@ -125,3 +125,28 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class NurseCreateSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(),
+                                              required=True)  # Assuming the user is passed in the request
+
+    class Meta:
+        model = NursingStaff
+        fields = ['user', 'employee_id', 'name', 'role', 'shift', 'departments', 'status', 'is_in_hospital', 'on_duty',
+                  'qualifications']
+
+    def create(self, validated_data):
+        departments = validated_data.pop('departments', [])
+        user = validated_data.pop('user')  # Pop user data from validated_data
+
+        # Set the hospital to the hospital of the current user
+        hospital = self.context['hospital']
+
+        # Create NursingStaff instance
+        nursing_staff = NursingStaff.objects.create(hospital=hospital, user=user, **validated_data)
+
+        # Assign departments
+        nursing_staff.departments.set(departments)
+
+        return nursing_staff
