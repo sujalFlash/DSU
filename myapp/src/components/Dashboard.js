@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Admin Dashboard</h1>
+        <h1 className="dashboard-title">Manager Dashboard</h1>
         <button className="logout-btn">Logout</button>
       </div>
       <div className="dashboard-buttons">
