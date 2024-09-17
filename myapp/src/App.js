@@ -9,7 +9,8 @@ import StaffManagement from './components/StaffManagement';
 import ImageManagement from './components/ImageManagement';
 import PatientManagement from './components/PatientManagement';
 import CreateDepartment from './components/CreateDepartment';
-import ListDepartment from './components/ListDepartment'; // Import ListDepartment component
+import ListDepartment from './components/ListDepartment'; 
+import HospitalsPage from './components/HospitalsPage';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
         <Route path="/image-management" element={<ImageManagement />} />
         <Route path="/patient-management" element={<PatientManagement />} />
         <Route path="/create-department" element={<CreateDepartment />} />
-        <Route path="/list-department" element={<ListDepartment />} /> {/* New Route for ListDepartment */}
+        <Route path="/list-department" element={<ListDepartment />} /> 
+        <Route path="/hospitals" element={<HospitalsPage />} />
       </Routes>
     </Router>
   );

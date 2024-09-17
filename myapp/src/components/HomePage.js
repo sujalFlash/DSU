@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate,Link } from 'react-router-dom'; // Import useNavigate hook
 import './HomePage.css';
 import Image1 from '../images/img1.jpg';
 import Image2 from '../images/img2.png'; 
@@ -41,7 +41,7 @@ const HomePage = () => {
           <li><a href="#home">Home</a></li>
           <li><a href="#solutions">Solutions</a></li>
           <li><a href="#imaging">Imaging</a></li>
-          <li><a href="#research">Research</a></li>
+          <li><Link to="/hospitals">Hospitals</Link></li> 
           <li><a href="#about">About Us</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
