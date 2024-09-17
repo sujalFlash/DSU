@@ -42,24 +42,7 @@ def list_departments_by_hospital_api(request):
     return Response(data, status=status.HTTP_200_OK)  # Return the structured data with a 200 OK status
 
 
-@api_view(['POST'])
-@permission_classes([IsManagerOrSuperuser])
-def create_doctor(request):
-    user = request.user
 
-    if hasattr(user, 'manager'):
-        hospital = user.manager.hospital  # Get the hospital associated with the manager
-    else:
-        return Response({"detail": "User is not associated with any hospital."}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Pass hospital in the serializer context
-    serializer = DoctorCreateSerializer(data=request.data, context={'hospital': hospital,'request':request})
-
-    if serializer.is_valid():
-        serializer.save()  # Now hospital is available in the serializer context
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def view_doctors(request):
@@ -137,3 +120,10 @@ def delete_nurse(request,pk):
     except NursingStaff.DoesNotExist:
         return Response({'detail':'Nurse does not exist'},status=status.HTTP_404_NOT_FOUND)
 
+class DoctorCreateView(generics.CreateAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorCreateSerializer
+    permission_classes = [IsAuthenticated, IsHospitalManager]
+
+    def perform_create(self, serializer):
+        serializer.save()

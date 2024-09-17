@@ -61,53 +61,7 @@ class WorkAssignmentSerializer(serializers.ModelSerializer):
         fields = ['id', 'staff_member', 'work_manager', 'work_name', 'assigned_date', 'end_date']
 
 
-class DoctorCreateSerializer(serializers.ModelSerializer):
-    print("sujal")
-    departments = serializers.PrimaryKeyRelatedField(
-        queryset=Department.objects.all(),
-        many=True
-    )
-    user_id = serializers.IntegerField(write_only=True, required=False)
 
-    class Meta:
-        model = Doctor
-        fields = ['user_id', 'employee_id', 'name', 'specialization', 'departments']
-
-    def validate_employee_id(self, value):
-        if Doctor.objects.filter(employee_id=value).exists():
-            raise serializers.ValidationError("An employee with this ID already exists.")
-        return value
-
-    def validate_user_id(self, value):
-        try:
-            user = CustomUser.objects.get(id=value)
-            auth_user = self.context['request'].user
-            if user.hospital != auth_user.hospital:
-                raise serializers.ValidationError("The specified user must belong to the same hospital as the authenticated user.")
-        except CustomUser.DoesNotExist:
-            raise serializers.ValidationError("The specified user does not exist.")
-        return value
-
-    def validate_departments(self, value):
-        # Get the authenticated user
-        auth_user = self.context['request'].user
-        hospital = auth_user.hospital
-
-        # Check each department to ensure it belongs to the same hospital
-        for department in value:
-            if department.hospital != hospital:
-                raise serializers.ValidationError(f"Department {department.id} does not belong to your hospital.")
-
-        return value
-    def create(self, validated_data):
-        departments = validated_data.pop('departments')
-        auth_user = self.context['request'].user
-        hospital = auth_user.hospital
-        if not hospital:
-            raise serializers.ValidationError("Hospital is required to create a doctor.")
-        doctor = Doctor.objects.create(hospital=hospital, **validated_data)
-        doctor.departments.set(departments)
-        return doctor
 class ListDepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
@@ -150,3 +104,47 @@ class NurseCreateSerializer(serializers.ModelSerializer):
         nursing_staff.departments.set(departments)
 
         return nursing_staff
+class DoctorCreateSerializer(serializers.ModelSerializer):
+    departments = serializers.PrimaryKeyRelatedField(
+        queryset=Department.objects.all(),
+        many=True
+    )
+    user_id = serializers.IntegerField(write_only=True, required=False)
+
+    class Meta:
+        model = Doctor
+        fields = ['user_id', 'employee_id', 'name', 'specialization', 'departments']
+
+    def validate_employee_id(self, value):
+        # Ensure the employee ID is unique
+        if Doctor.objects.filter(employee_id=value).exists():
+            raise serializers.ValidationError("A doctor with this employee ID already exists.")
+        return value
+
+    def validate_user_id(self, value):
+        try:
+            # Ensure the user exists and belongs to the same hospital
+            user = CustomUser.objects.get(id=value)
+            auth_user = self.context['request'].user
+            if user.hospital != auth_user.hospital:
+                raise serializers.ValidationError("The user must belong to the same hospital as the authenticated user.")
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("The specified user does not exist.")
+        return value
+
+    def validate_departments(self, value):
+        auth_user = self.context['request'].user
+        hospital = auth_user.hospital
+
+        # Ensure that each department belongs to the authenticated user's hospital
+        for department in value:
+            if department.hospital != hospital:
+                raise serializers.ValidationError(f"Department {department.id} does not belong to your hospital.")
+        return value
+
+    def create(self, validated_data):
+        departments = validated_data.pop('departments')
+        hospital = self.context['request'].user.hospital
+        doctor = Doctor.objects.create(hospital=hospital, **validated_data)
+        doctor.departments.set(departments)
+        return doctor
