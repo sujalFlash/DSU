@@ -4,7 +4,7 @@ from rest_framework import status,generics
 from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
-    NursingStaffSerializer,NurseCreateSerializer,CleanerCreateSerializer
+    NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -134,3 +134,24 @@ class CleanerCreateView(generics.CreateAPIView):
     def perform_create(self,serializer):
         serializer.save()
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_cleaners(request):
+    if not request.user.hospital:
+        return Response({"detail":'User does not belong to Hospital'},status=status.HTTP_400_BAD_REQUEST)
+
+    cleaner=CleaningStaff.objects.filter(hospital=request.user.hospital)
+    serializer=CleaningStaffSerializer(cleaner,many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated,IsHospitalManager])
+def delete_cleaners(request,pk):
+    if not request.user.hospital:
+        return Response({"detail":'User doesnot belong to any hospital'},status=status.HTTP_400_BAD_REQUEST)
+    try:
+        cleaner=CleaningStaff.objects.get(id=pk)
+        cleaner.delete()
+        return Response({'detail':"Cleaner was successfully deleted"},status=status.HTTP_200_OK)
+    except CleaningStaff.DoesNotExist:
+        return Response({'detail':'Cleaner does not exist'},status=status.HTTP_404_NOT_FOUND)
