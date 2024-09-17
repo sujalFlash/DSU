@@ -4,7 +4,7 @@ from rest_framework import status,generics
 from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager, Hospital, NursingStaff,CustomUser
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
-    NursingStaffSerializer
+    NursingStaffSerializer,NurseCreateSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -113,7 +113,7 @@ class CustomUserCreativeView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED,headers=headers)
 
 
-'''@api_view(['POST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated,IsHospitalManager])
 def add_nurses(request):
 
@@ -125,5 +125,15 @@ def add_nurses(request):
         return Response(serializer.data,status=status.HTTP_201_CREATED)
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated,IsHospitalManager])
+def delete_nurse(request,pk):
+    if not request.user.hospital:
+        return Response({"detail":"User doesnot belong to Hospital"},status=status.HTTP_400_BAD_REQUEST)
+    try:
+        nurse=NursingStaff.objects.get(id=pk)
+        nurse.delete()
+        return Response({'detail':'Nurse was successfully deleted'},status=status.HTTP_200_OK)
+    except NursingStaff.DoesNotExist:
+        return Response({'detail':'Nurse does not exist'},status=status.HTTP_404_NOT_FOUND)
 
-'''
