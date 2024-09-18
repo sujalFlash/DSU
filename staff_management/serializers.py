@@ -30,7 +30,7 @@ class StaffMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StaffMember
-        fields = ['user_id','id','employee_id', 'name', 'role', 'departments', 'hospital', 'status', 'shift']
+        fields = ['user_id','id','employee_id', 'name', 'role', 'departments', 'hospital', 'status', 'shift','is_in_hospital','on_duty']
 
 class NursingStaffSerializer(StaffMemberSerializer):
     class Meta:
@@ -248,3 +248,13 @@ class NurseStatusUpdateSerializer(serializers.ModelSerializer):
     def validate(self,attrs):
         if not attrs:
             raise serializers.ValidationError("Request body cannot be empty.")
+        return attrs
+
+class CleaningStaffUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CleaningStaff
+        fields=['shift','status','is_in_hospital','on_duty','area_assigned']
+    def validate(self,attrs):
+        if not attrs:
+            raise serializers.ValidationError("Request body cannot be empty.")
+        return attrs

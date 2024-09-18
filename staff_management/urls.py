@@ -1,7 +1,7 @@
 from django.urls import path
 from .rest_view import create_department_api, list_departments_by_hospital_api, DoctorCreateView,view_doctors,get_user_departments
 from .rest_view import delete_doctor,view_nurses,CustomUserCreativeView,add_nurses,delete_nurse,CleanerCreateView,view_cleaners,delete_cleaners
-from .rest_view import ReceptionStaffCreation,view_reception_staff,delete_reception_staff,DoctorStatusUpdateAPIView
+from .rest_view import ReceptionStaffCreation,view_reception_staff,delete_reception_staff,DoctorStatusUpdateAPIView,NurseStatusUpdateAPIView,CleaningStaffUpdateAPIView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -26,4 +26,7 @@ urlpatterns = [
     path('api/view_reception_staff/',view_reception_staff,name="view_reception_staff"),
     path('api/delete_reception_staff/<int:pk>/',delete_reception_staff,name="delete_reception_staff"),
     path('api/doctor_update/<int:pk>/',DoctorStatusUpdateAPIView.as_view(),name="doctor_update"),
+    path('api/nurse_update/<int:pk>/',NurseStatusUpdateAPIView.as_view(),name="nurse_update"),
+    path('api/cleaner_update/<int:pk>/',CleaningStaffUpdateAPIView.as_view(),name="cleaner_update"),
+
 ]
