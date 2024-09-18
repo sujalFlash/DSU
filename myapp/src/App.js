@@ -16,6 +16,7 @@ import CreateNurse from './components/CreateNurse';
 import DiseaseHistory from './components/DiseaseHistory';
 import ViewDoctor from  './components/ViewDoctor';
 import ViewNurse from  './components/ViewNurse';
+import ViewCleaners from  './components/ViewCleaners';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/disease-history" element={<DiseaseHistory />} />
         <Route path="/view-doctor" element={<ViewDoctor />} />
         <Route path="/view-nurse" element={<ViewNurse />} />
+        <Route path="/view-cleaners" element={<ViewCleaners />} />
       </Routes>
     </Router>
   );
