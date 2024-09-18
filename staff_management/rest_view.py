@@ -1,15 +1,18 @@
+from urllib import request
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status,generics
 from django.core.exceptions import PermissionDenied
-from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff
+from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff, ReceptionStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
-    NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer
+    NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer, \
+    ReceptionStaffSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer,ReceptionStaffCreationSerializer
 @api_view(['POST'])
 @permission_classes([IsHospitalManager])
 def create_department_api(request):
@@ -155,3 +158,31 @@ def delete_cleaners(request,pk):
         return Response({'detail':"Cleaner was successfully deleted"},status=status.HTTP_200_OK)
     except CleaningStaff.DoesNotExist:
         return Response({'detail':'Cleaner does not exist'},status=status.HTTP_404_NOT_FOUND)
+class ReceptionStaffCreation(generics.CreateAPIView):
+    queryset=ReceptionStaff.objects.all()
+    serializer_class=ReceptionStaffCreationSerializer
+    permission_classes=[IsAuthenticated,IsHospitalManager]
+    def perform_create(self,serializer):
+        serializer.save()
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def view_reception_staff(request):
+    if not request.user.hospital:
+        return Response({"detail":"User doesnot belong to hospial"},status=status.HTTP_400_BAD_REQUEST)
+    reception=ReceptionStaff.objects.filter(hospital=request.user.hospital)
+    serializer=ReceptionStaffSerializer(reception,many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated,IsHospitalManager])
+def delete_reception_staff(request,pk):
+    if not request.user.hospital:
+        return Response({"detail":"User doesnot belong to nay hospital"},status=status.HTTP_400_BAD_REQUEST)
+    try:
+        reception=ReceptionStaff.objects.get(id=pk)
+        reception.delete()
+        return Response({'detail':'Reception staff was successfully deleted'},status=status.HTTP_200_OK)
+    except ReceptionStaff.DoesNotExist:
+        return Response({'detail':'Reception staffdoes not exist'},status=status.HTTP_404_NOT_FOUND)

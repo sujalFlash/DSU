@@ -190,4 +190,44 @@ class CleanerCreateSerializer(serializers.ModelSerializer):
         cleaner = CleaningStaff.objects.create(hospital=hospital, **validated_data)
         cleaner.departments.set(departments)
         return cleaner
+class ReceptionStaffCreationSerializer(serializers.ModelSerializer):
+    departments = serializers.PrimaryKeyRelatedField(
+        queryset=Department.objects.all(),
+        many=True
+    )
+    user_id = serializers.IntegerField(write_only=True, required=False)
 
+    class Meta:
+        model = ReceptionStaff
+        fields = ['user_id', 'employee_id', 'name', 'desk_assigned', 'departments']
+
+    def validate_employee_id(self, value):
+        if ReceptionStaff.objects.filter(employee_id=value).exists():
+            raise serializers.ValidationError("A reception with this employee ID already exists.")
+        return value
+
+    def validate_user_id(self, value):
+        try:
+            user = CustomUser.objects.get(id=value)
+            auth_user = self.context['request'].user
+            if user.hospital != auth_user.hospital:
+                raise serializers.ValidationError(
+                    "The user must belong to the same hospital as the authenticated user.")
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("The specified user does not exist.")
+        return value
+
+    def validate_departments(self, value):
+        auth_user = self.context['request'].user
+        hospital = auth_user.hospital
+        for department in value:
+            if department.hospital != hospital:
+                raise serializers.ValidationError(f"Department {department.id} does not belong to your hospital.")
+        return value
+
+    def create(self, validated_data):
+        departments = validated_data.pop('departments')
+        hospital = self.context['request'].user.hospital
+        reception = ReceptionStaff.objects.create(hospital=hospital, **validated_data)
+        reception.departments.set(departments)
+        return reception
