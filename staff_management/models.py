@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from hospital_management.models import Hospital
 from django.contrib.auth.hashers import make_password
-# Department Model
 class Department(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
@@ -15,9 +14,6 @@ class Department(models.Model):
 
     class Meta:
         unique_together = ('name', 'hospital')
-
-
-# CustomUser Model
 class CustomUser(AbstractUser):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name='users', null=True, blank=True)
 
@@ -28,7 +24,6 @@ class CustomUser(AbstractUser):
         super().save(*args, **kwargs)
 
     def clean(self):
-        # Ensure that a user can only have one of the following roles: Staff Member or Work Manager.
         role_count = sum([hasattr(self, 'staff_member'), hasattr(self, 'manager')])
         if role_count > 1:
             raise ValidationError("A user can only be a Staff Member or Work Manager, not both.")

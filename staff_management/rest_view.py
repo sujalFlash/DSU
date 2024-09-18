@@ -1,13 +1,14 @@
 from urllib import request
 
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework import status,generics
 from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff, ReceptionStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
     NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer, \
-    ReceptionStaffSerializer
+    ReceptionStaffSerializer,DoctorStatusUpdateSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -186,3 +187,19 @@ def delete_reception_staff(request,pk):
         return Response({'detail':'Reception staff was successfully deleted'},status=status.HTTP_200_OK)
     except ReceptionStaff.DoesNotExist:
         return Response({'detail':'Reception staffdoes not exist'},status=status.HTTP_404_NOT_FOUND)
+# views.py
+from rest_framework import generics
+
+class DoctorStatusUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = DoctorStatusUpdateSerializer
+    lookup_field = 'pk'
+    http_method_names = ['patch', 'options', 'head']
+    permission_classes=[IsAuthenticated,IsHospitalManager]
+    def get_queryset(self):
+        return Doctor.objects.filter(hospital=self.request.user.hospital)
+    def get_object(self):
+        try:
+            return super().get_object()
+        except Doctor.DoesNotExist:
+            return Response({'detail':"Doctor with this particular id doesnt exist"})
+

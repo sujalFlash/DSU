@@ -24,7 +24,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ['id','employee_id', 'name', 'specialization', 'departments', 'hospital', 'status', 'shift']
+        fields = ['id','employee_id', 'name', 'specialization', 'departments', 'hospital', 'status', 'shift','is_in_hospital','on_duty']
 class StaffMemberSerializer(serializers.ModelSerializer):
     departments = DepartmentSerializer(many=True, read_only=True)
 
@@ -231,3 +231,13 @@ class ReceptionStaffCreationSerializer(serializers.ModelSerializer):
         reception = ReceptionStaff.objects.create(hospital=hospital, **validated_data)
         reception.departments.set(departments)
         return reception
+class DoctorStatusUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ['shift', 'status', 'is_in_hospital', 'on_duty']
+
+    def validate(self, attrs):
+        if not attrs:
+            raise serializers.ValidationError("Request body cannot be empty.")
+
+        return attrs
