@@ -29,13 +29,10 @@ const Dashboard = () => {
         <Link to="/delete-doctor" className="btn">Delete Doctor</Link>
         <Link to="/view-nurse" className="btn">View Nurse</Link>
         <Link to="/delete-nurse" className="btn">Delete Nurse</Link>
+        <Link to="/view-receptionists" className="btn">View Receptionist</Link>
+        <Link to="/delete-receptionist" className="btn">Delete Receptionist</Link>
         <Link to="/view-cleaners" className="btn">View Cleaner</Link>
         <Link to="/delete-cleaners" className="btn">Delete Cleaner</Link>
-        <Link to="/audit-and-logs" className="btn">Audit and Logs</Link>
-        <Link to="/settings" className="btn">Settings</Link>
-        <button className="btn">Reports and Analytics</button>
-        <button className="btn">Notifications</button>
-        <button className="btn">Help and Support</button>
       </div>
     </div>
   );

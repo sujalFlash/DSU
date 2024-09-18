@@ -20,6 +20,9 @@ import ViewCleaners from  './components/ViewCleaners';
 import DeleteDoctor from './components/DeleteDoctor';
 import DeleteNurse from './components/DeleteNurse';
 import DeleteCleaners from './components/DeleteCleaners';
+import ViewReceptionists from './components/ViewReceptionists';
+import DeleteReceptionist from './components/DeleteReceptionist';
+
 
 function App() {
   return (
@@ -44,6 +47,8 @@ function App() {
         <Route path="/delete-doctor" element={<DeleteDoctor />} />
         <Route path="/delete-nurse" element={<DeleteNurse />} />
         <Route path="/delete-cleaners" element={<DeleteCleaners />} />
+        <Route path="/view-receptionists" element={<ViewReceptionists />} />
+        <Route path="/delete-receptionist" element={<DeleteReceptionist />} />
       </Routes>
     </Router>
   );
