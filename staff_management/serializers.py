@@ -50,7 +50,7 @@ class CleaningStaffSerializer(StaffMemberSerializer):
 class WorkManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkManager
-        fields = ['id', 'name', 'contact_number', 'staff_members']
+        fields = ['id', 'name', 'contact_number','staff_members','departments']
 
 class WorkAssignmentSerializer(serializers.ModelSerializer):
     staff_member = StaffMemberSerializer()
@@ -266,3 +266,5 @@ class ReceptionStaffUpdateSerializer(serializers.ModelSerializer):
         if not attrs:
             raise serializers.ValidationError("Request body cannot be empty.")
         return attrs
+
+

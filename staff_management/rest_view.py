@@ -8,7 +8,8 @@ from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff, ReceptionStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
     NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer, \
-    ReceptionStaffSerializer,DoctorStatusUpdateSerializer,NurseStatusUpdateSerializer,CleaningStaffUpdateSerializer,ReceptionStaffUpdateSerializer
+    ReceptionStaffSerializer, DoctorStatusUpdateSerializer, NurseStatusUpdateSerializer, CleaningStaffUpdateSerializer, \
+    ReceptionStaffUpdateSerializer, WorkManagerSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -174,7 +175,14 @@ def view_reception_staff(request):
     reception=ReceptionStaff.objects.filter(hospital=request.user.hospital)
     serializer=ReceptionStaffSerializer(reception,many=True)
     return Response(serializer.data,status=status.HTTP_200_OK)
-
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def view_manager(request):
+    if not request.user.hospital:
+        return Response({'detail':"User doesnot belong to hospital"},status=status.HTTP_400_BAD_REQUEST)
+    managers=WorkManager.objects.filter(hospital=request.user.hospital)
+    serializer=WorkManagerSerializer(managers,many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated,IsHospitalManager])
