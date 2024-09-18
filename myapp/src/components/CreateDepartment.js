@@ -30,7 +30,7 @@ const CreateDepartment = () => {
         },
         body: JSON.stringify(departmentData), // Send the form data in JSON format
       });
-
+      console.log(response)
       if (response.ok) {
         const data = await response.json();
         console.log('Department created successfully:', data);

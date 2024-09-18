@@ -14,6 +14,7 @@ import HospitalsPage from './components/HospitalsPage';
 import CreateUser from './components/CreateUser';
 import CreateNurse from './components/CreateNurse';
 import DiseaseHistory from './components/DiseaseHistory';
+import ViewDoctor from  './components/ViewDoctor';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/create-nurse" element={<CreateNurse />} /> 
         <Route path="/disease-history" element={<DiseaseHistory />} />
+        <Route path="/view-doctor" element={<ViewDoctor />} />
       </Routes>
     </Router>
   );
