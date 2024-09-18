@@ -28,8 +28,9 @@ const Dashboard = () => {
         <Link to="/view-doctor" className="btn">View Doctor</Link>
         <Link to="/delete-doctor" className="btn">Delete Doctor</Link>
         <Link to="/view-nurse" className="btn">View Nurse</Link>
-        <button className="btn">Delete Nurse</button>
+        <Link to="/delete-nurse" className="btn">Delete Nurse</Link>
         <Link to="/view-cleaners" className="btn">View Cleaner</Link>
+        <Link to="/delete-cleaners" className="btn">Delete Cleaner</Link>
         <Link to="/audit-and-logs" className="btn">Audit and Logs</Link>
         <Link to="/settings" className="btn">Settings</Link>
         <button className="btn">Reports and Analytics</button>
