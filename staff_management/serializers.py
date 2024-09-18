@@ -258,3 +258,11 @@ class CleaningStaffUpdateSerializer(serializers.ModelSerializer):
         if not attrs:
             raise serializers.ValidationError("Request body cannot be empty.")
         return attrs
+class ReceptionStaffUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ReceptionStaff
+        fields=['shift','status','is_in_hospital','on_duty','desk_assigned']
+    def validate(self,attrs):
+        if not attrs:
+            raise serializers.ValidationError("Request body cannot be empty.")
+        return attrs

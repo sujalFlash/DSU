@@ -8,7 +8,7 @@ from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff, ReceptionStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
     NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer, \
-    ReceptionStaffSerializer,DoctorStatusUpdateSerializer,NurseStatusUpdateSerializer,CleaningStaffUpdateSerializer
+    ReceptionStaffSerializer,DoctorStatusUpdateSerializer,NurseStatusUpdateSerializer,CleaningStaffUpdateSerializer,ReceptionStaffUpdateSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -216,7 +216,7 @@ class NurseStatusUpdateAPIView(generics.UpdateAPIView):
         except  NursingStaff.DoesNotExist:
             return Response({'detail':"Nursing Staff with this particular id doesnt exist"},status=status.HTTP_404_NOT_FOUND)
 class CleaningStaffUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = CleaningStaffSerializer
+    serializer_class = CleaningStaffUpdateSerializer
     lookup_field='pk'
     http_method_names=['patch','options','head']
     permission_classes=[IsAuthenticated,IsHospitalManager]
@@ -227,3 +227,15 @@ class CleaningStaffUpdateAPIView(generics.UpdateAPIView):
             return super().get_object()
         except CleaningStaff.DoesNotExist:
             return Response({"detail":"Cleaning Staff does not exist"},status=status.HTTP_404_NOT_FOUND)
+class ReceptionStaffUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = ReceptionStaffUpdateSerializer
+    lookup_field='pk'
+    http_method_names=['patch','options','head']
+    permission_classes=[IsAuthenticated,IsHospitalManager]
+    def get_queryset(self):
+        return ReceptionStaff.objects.filter(hospital=self.request.user.hospital)
+    def get_object(self):
+        try:
+            return super().get_object()
+        except ReceptionStaff.DoesNotExist:
+            return Response({"detail":"Reception staff does not exist"},status=status.HTTP_404_NOT_FOUND)
