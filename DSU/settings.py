@@ -59,8 +59,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True 
 ROOT_URLCONF = 'DSU.urls'
 
 TEMPLATES = [
@@ -159,10 +160,12 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
 }
-CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000',
-    'http://localhost:3001', # The default port for create-react-app
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React frontend
+     'http://localhost:3001',
 ]
+
 AUTHENTICATION_BACKENDS = [
 
 
