@@ -23,7 +23,6 @@ const Dashboard = () => {
         <Link to="/patient-management" className="btn">Patient Management</Link>
         <Link to="/create-department" className="btn">Create Department</Link>
         <Link to="/create-user" className="btn">Create User</Link>
-        <Link to="/list-department" className="btn">List Department</Link>
         <Link to="/disease-history" className="btn">View Disease History</Link> {/* Updated this line */}
         <Link to="/view-doctor" className="btn">View Doctor</Link>
         <Link to="/delete-doctor" className="btn">Delete Doctor</Link>
