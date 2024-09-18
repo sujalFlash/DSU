@@ -18,31 +18,28 @@ const CreateDepartment = () => {
       description: description,
     };
 
-    console.log('Submitting department data:', departmentData); // Debug statement
-
     try {
+      const accessToken = getAccessToken(); // Get the token from localStorage
+      console.log(accessToken)
+
       const response = await fetch('http://127.0.0.1:8000/api/create-department/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAccessToken()}`, // Include access token
+          'Authorization': `Bearer ${accessToken}`, // Include access token in header
         },
         body: JSON.stringify(departmentData), // Send the form data in JSON format
       });
 
-      console.log('Response status:', response.status); // Debug statement
-      console.log('Response headers:', response.headers); // Debug statement
-
       if (response.ok) {
         const data = await response.json();
-        console.log('Department created successfully:', data); // Debug statement
+        console.log('Department created successfully:', data);
         // Reset the form after successful submission
         setName('');
         setDescription('');
         alert('Department created successfully!');
       } else {
         const errorData = await response.json();
-        console.log('Error response data:', errorData); // Debug statement
         alert(`Error: ${errorData.detail || 'Failed to create department'}`);
       }
     } catch (error) {

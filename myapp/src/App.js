@@ -9,9 +9,10 @@ import StaffManagement from './components/StaffManagement';
 import ImageManagement from './components/ImageManagement';
 import PatientManagement from './components/PatientManagement';
 import CreateDepartment from './components/CreateDepartment';
-import ListDepartment from './components/ListDepartment'; 
+import ListDepartment from './components/ListDepartment';
 import HospitalsPage from './components/HospitalsPage';
 import CreateUser from './components/CreateUser';
+import CreateNurse from './components/CreateNurse'; // Import CreateNurse
 
 function App() {
   return (
@@ -25,9 +26,10 @@ function App() {
         <Route path="/image-management" element={<ImageManagement />} />
         <Route path="/patient-management" element={<PatientManagement />} />
         <Route path="/create-department" element={<CreateDepartment />} />
-        <Route path="/list-department" element={<ListDepartment />} /> 
+        <Route path="/list-department" element={<ListDepartment />} />
         <Route path="/hospitals" element={<HospitalsPage />} />
         <Route path="/create-user" element={<CreateUser />} />
+        <Route path="/create-nurse" element={<CreateNurse />} /> {/* Add route for CreateNurse */}
       </Routes>
     </Router>
   );

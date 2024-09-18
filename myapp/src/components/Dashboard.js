@@ -26,6 +26,7 @@ const Dashboard = () => {
         <Link to="/create-department" className="btn">Create Department</Link>
         <Link to="/create-user" className="btn">Create User</Link>
         <Link to="/list-department" className="btn">List Department</Link>
+        <button className="btn">Disease History</button>
         <Link to="/audit-and-logs" className="btn">Audit and Logs</Link>
         <Link to="/settings" className="btn">Settings</Link>
         <button className="btn">Reports and Analytics</button>
