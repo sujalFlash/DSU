@@ -8,7 +8,7 @@ from django.core.exceptions import PermissionDenied
 from .models import Department, WorkManager, Hospital, NursingStaff, CustomUser, CleaningStaff, ReceptionStaff
 from .serializers import DepartmentSerializer, DoctorSerializer, DoctorCreateSerializer, ListDepartmentSerializer, \
     NursingStaffSerializer, NurseCreateSerializer, CleanerCreateSerializer, CleaningStaffSerializer, \
-    ReceptionStaffSerializer,DoctorStatusUpdateSerializer
+    ReceptionStaffSerializer,DoctorStatusUpdateSerializer,NurseStatusUpdateSerializer
 from .permissions import IsHospitalManager,IsDoctor,IsManagerOrSuperuser
 from .models import Doctor
 from rest_framework.permissions import IsAuthenticated
@@ -201,5 +201,17 @@ class DoctorStatusUpdateAPIView(generics.UpdateAPIView):
         try:
             return super().get_object()
         except Doctor.DoesNotExist:
-            return Response({'detail':"Doctor with this particular id doesnt exist"})
+            return Response({'detail':"Doctor with this particular id doesnt exist"},status=status.HTTP_404_NOT_FOUND)
 
+class NurseStatusUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = NurseStatusUpdateSerializer
+    lookup_field='pk'
+    http_method_names=['patch','options','head']
+    permission_classes=[IsAuthenticated,IsHospitalManager]
+    def get_queryset(self):
+        return NursingStaff.objects.filter(hospital=self.request.user.hospital)
+    def get_object(self):
+        try:
+            return super().get_object()
+        except  NursingStaff.DoesNotExist:
+            return Response({'detail':"Nursing Staff with this particular id doesnt exist"},status=status.HTTP_404_NOT_FOUND)
