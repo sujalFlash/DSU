@@ -17,28 +17,17 @@ class ImageProcessingView(APIView):
         if serializer.is_valid():
             image_file = serializer.validated_data['image']
             try:
-                # Read DICOM file
                 dicom_data = pydicom.dcmread(image_file)
                 image_array = dicom_data.pixel_array
-
-                # Convert to PIL Image
                 image = Image.fromarray(image_array)
-
-                # Perform normalization and resizing
                 normalization = serializer.validated_data.get('normalization', 1.0)
                 resize_width = serializer.validated_data.get('resize_width', 256)
                 resize_height = serializer.validated_data.get('resize_height', 256)
-
-                # Normalize and resize image
                 image = image.point(lambda p: p * normalization)
                 image = image.resize((resize_width, resize_height))
-
-                # Save the image to a bytes buffer
                 img_byte_arr = io.BytesIO()
-                image.save(img_byte_arr, format='PNG')  # Save as PNG
+                image.save(img_byte_arr, format='PNG')
                 img_byte_arr.seek(0)
-
-                # Return the image as a response
                 response = HttpResponse(img_byte_arr.getvalue(), content_type='image/png')
                 response['Content-Disposition'] = 'attachment; filename="processed_image.png"'
                 return response
