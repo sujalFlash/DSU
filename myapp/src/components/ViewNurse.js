@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './ViewNurse.css';
+
 const ViewNurses = () => {
   const [nurses, setNurses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,28 +40,32 @@ const ViewNurses = () => {
 
   return (
     <div className="view-nurses-container">
-      <h2>Nurse List</h2>
+      <h2>Nurses List</h2>
       {nurses.length > 0 ? (
         <table>
           <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Role</th>
               <th>Department Name</th>
               <th>Department Description</th>
               <th>Department Hospital</th>
               <th>Shift</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {nurses.map((nurse) => (
               <tr key={nurse.id}>
                 <td>{nurse.id}</td>
-                <td>{nurse.name}</td>
-                <td>{nurse.departments[0].name}</td>
-                <td>{nurse.departments[0].description}</td>
-                <td>{nurse.departments[0].hospital}</td>
-                <td>{nurse.shift}</td>
+                <td>{nurse.name || 'N/A'}</td>
+                <td>{nurse.role || 'N/A'}</td>
+                <td>{nurse.departments && nurse.departments[0]?.name || 'N/A'}</td>
+                <td>{nurse.departments && nurse.departments[0]?.description || 'N/A'}</td>
+                <td>{nurse.departments && nurse.departments[0]?.hospital || 'N/A'}</td>
+                <td>{nurse.shift || 'N/A'}</td>
+                <td>{nurse.status || 'N/A'}</td>
               </tr>
             ))}
           </tbody>

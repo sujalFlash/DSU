@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 const ViewReceptionists = () => {
   const [receptionists, setReceptionists] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,7 +9,7 @@ const ViewReceptionists = () => {
   useEffect(() => {
     const fetchReceptionists = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/view_reception_staff/`, {
+        const response = await fetch('http://127.0.0.1:8000/api/view_reception_staff/', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -19,10 +20,8 @@ const ViewReceptionists = () => {
         }
 
         const data = await response.json();
-        console.log('Receptionists data:', data); // Log the API response
         setReceptionists(data);
       } catch (error) {
-        console.error('Error fetching receptionists:', error);
         setError(error);
       } finally {
         setLoading(false);
@@ -37,25 +36,41 @@ const ViewReceptionists = () => {
   }
 
   if (error) {
-    return <div>Error fetching data: {error.message}</div>;
+    return <div>Error fetching receptionists: {error.message}</div>;
   }
 
   return (
     <div className="view-receptionists-container">
       <h2>Receptionists List</h2>
       {receptionists.length > 0 ? (
-        <ul>
-          {receptionists.map((receptionist) => (
-            <li key={receptionist.id}>
-              <h3>Receptionist ID: {receptionist.id}</h3>
-              <p>Name: {receptionist.name || 'N/A'}</p>
-              <p>Shift: {receptionist.shift || 'N/A'}</p>
-              <p>Department: {receptionist.department || 'N/A'}</p>
-              <p>Hospital: {receptionist.hospital || 'N/A'}</p>
-              {/* Add more fields as needed */}
-            </li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Department Name</th>
+              <th>Department Description</th>
+              <th>Department Hospital</th>
+              <th>Shift</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {receptionists.map((receptionist) => (
+              <tr key={receptionist.id}>
+                <td>{receptionist.id}</td>
+                <td>{receptionist.name || 'N/A'}</td>
+                <td>{receptionist.role || 'N/A'}</td>
+                <td>{receptionist.departments && receptionist.departments[0]?.name || 'N/A'}</td>
+                <td>{receptionist.departments && receptionist.departments[0]?.description || 'N/A'}</td>
+                <td>{receptionist.departments && receptionist.departments[0]?.hospital || 'N/A'}</td>
+                <td>{receptionist.shift || 'N/A'}</td>
+                <td>{receptionist.status || 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <p>No receptionists available.</p>
       )}

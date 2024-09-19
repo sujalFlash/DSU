@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './ViewCleaners.css';  // Make sure you create this CSS file for styling
+import './ViewCleaners.css'; // Ensure you have this CSS file for styling
 
 const ViewCleaners = () => {
   const [cleaners, setCleaners] = useState([]);
@@ -11,8 +11,8 @@ const ViewCleaners = () => {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/view_cleaners/', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
         });
 
         if (!response.ok) {
@@ -41,30 +41,32 @@ const ViewCleaners = () => {
 
   return (
     <div className="view-cleaners-container">
-      <h2>Cleaner List</h2>
+      <h2>Cleaners List</h2>
       {cleaners.length > 0 ? (
-        <table>
+        <table className="cleaners-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Role</th>
               <th>Department Name</th>
               <th>Department Description</th>
               <th>Department Hospital</th>
               <th>Shift</th>
-              {/* Add more columns as needed */}
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {cleaners.map((cleaner) => (
               <tr key={cleaner.id}>
                 <td>{cleaner.id}</td>
-                <td>{cleaner.name}</td>
-                <td>{cleaner.departments[0]?.name || 'N/A'}</td>
-                <td>{cleaner.departments[0]?.description || 'N/A'}</td>
-                <td>{cleaner.departments[0]?.hospital || 'N/A'}</td>
-                <td>{cleaner.shift}</td>
-                {/* Add more cells as needed */}
+                <td>{cleaner.name || 'N/A'}</td>
+                <td>{cleaner.role || 'N/A'}</td>
+                <td>{cleaner.departments && cleaner.departments[0]?.name || 'N/A'}</td>
+                <td>{cleaner.departments && cleaner.departments[0]?.description || 'N/A'}</td>
+                <td>{cleaner.departments && cleaner.departments[0]?.hospital || 'N/A'}</td>
+                <td>{cleaner.shift || 'N/A'}</td>
+                <td>{cleaner.status || 'N/A'}</td> {/* Assuming `status` is available in the data */}
               </tr>
             ))}
           </tbody>
