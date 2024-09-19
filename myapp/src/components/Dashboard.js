@@ -18,12 +18,11 @@ const Dashboard = () => {
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
       <div className="dashboard-buttons">
-        <Link to="/staff-management" className="btn">Staff Management</Link>
         <Link to="/image-management" className="btn">Image Management</Link>
-        <Link to="/patient-management" className="btn">Patient Management</Link>
         <Link to="/create-department" className="btn">Create Department</Link>
         <Link to="/create-user" className="btn">Create User</Link>
-        <Link to="/disease-history" className="btn">View Disease History</Link> {/* Updated this line */}
+        <Link to="/disease-history" className="btn">View Disease History</Link>
+        <Link to="/create-doctor" className="btn">Create Doctor</Link>
         <Link to="/view-doctor" className="btn">View Doctor</Link>
         <Link to="/delete-doctor" className="btn">Delete Doctor</Link>
         <Link to="/view-nurse" className="btn">View Nurse</Link>

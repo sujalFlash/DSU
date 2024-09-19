@@ -5,14 +5,10 @@ import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import Dashboard from './components/Dashboard';
-import StaffManagement from './components/StaffManagement';
 import ImageManagement from './components/ImageManagement';
-import PatientManagement from './components/PatientManagement';
 import CreateDepartment from './components/CreateDepartment';
 import ListDepartment from './components/ListDepartment';
 import HospitalsPage from './components/HospitalsPage';
-import CreateUser from './components/CreateUser';
-import CreateNurse from './components/CreateNurse';
 import DiseaseHistory from './components/DiseaseHistory';
 import ViewDoctor from  './components/ViewDoctor';
 import ViewNurse from  './components/ViewNurse';
@@ -22,6 +18,8 @@ import DeleteNurse from './components/DeleteNurse';
 import DeleteCleaners from './components/DeleteCleaners';
 import ViewReceptionists from './components/ViewReceptionists';
 import DeleteReceptionist from './components/DeleteReceptionist';
+import CreateUser from './components/CreateUser';
+import CreateDoctor from './components/CreateDoctor';
 
 
 function App() {
@@ -32,14 +30,12 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/staff-management" element={<StaffManagement />} />
-        <Route path="/image-management" element={<ImageManagement />} />
-        <Route path="/patient-management" element={<PatientManagement />} />
+        <Route path="/image-management" element={<ImageManagement />}/>
         <Route path="/create-department" element={<CreateDepartment />} />
         <Route path="/list-department" element={<ListDepartment />} />
         <Route path="/hospitals" element={<HospitalsPage />} />
         <Route path="/create-user" element={<CreateUser />} />
-        <Route path="/create-nurse" element={<CreateNurse />} /> 
+        <Route path="/create-doctor" element={<CreateDoctor />} /> 
         <Route path="/disease-history" element={<DiseaseHistory />} />
         <Route path="/view-doctor" element={<ViewDoctor />} />
         <Route path="/view-nurse" element={<ViewNurse />} />
