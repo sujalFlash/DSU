@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'deeplearning',
     'ImageAugmentation',
+    'ImageProcessing'
 ]
 
 MIDDLEWARE = [
