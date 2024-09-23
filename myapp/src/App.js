@@ -16,11 +16,13 @@ import ViewCleaners from  './components/ViewCleaners';
 import DeleteDoctor from './components/DeleteDoctor';
 import DeleteNurse from './components/DeleteNurse';
 import DeleteCleaners from './components/DeleteCleaners';
-import ViewReceptionists from './components/ViewReceptionists';
+import ViewReceptionists from './components/ViewReceptionist';
 import DeleteReceptionist from './components/DeleteReceptionist';
 import CreateUser from './components/CreateUser';
 import CreateDoctor from './components/CreateDoctor';
 import CreateNurse from './components/CreateNurse';
+import CreateReceptionist from './components/CreateReceptionist';
+import ViewReceptionist from './components/ViewReceptionist';
 
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
         <Route path="/delete-cleaners" element={<DeleteCleaners />} />
         <Route path="/view-receptionists" element={<ViewReceptionists />} />
         <Route path="/delete-receptionist" element={<DeleteReceptionist />} />
+        <Route path="/create-receptionist" element={<CreateReceptionist />} />
+        <Route path="/view-receptionist" element={<ViewReceptionist />} />
       </Routes>
     </Router>
   );
