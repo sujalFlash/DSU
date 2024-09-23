@@ -38,6 +38,10 @@ const ViewDoctors = () => {
   }, []);
 
   const handleDelete = async (doctorId) => {
+    if (!window.confirm('Are you sure you want to delete this nurse?')) {
+      return;
+    }
+
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/delete_doctor/${doctorId}/`, {
         method: 'DELETE',

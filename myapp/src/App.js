@@ -20,6 +20,7 @@ import ViewReceptionists from './components/ViewReceptionists';
 import DeleteReceptionist from './components/DeleteReceptionist';
 import CreateUser from './components/CreateUser';
 import CreateDoctor from './components/CreateDoctor';
+import CreateNurse from './components/CreateNurse';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/hospitals" element={<HospitalsPage />} />
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/create-doctor" element={<CreateDoctor />} /> 
+        <Route path="/create-nurse" element={<CreateNurse />} /> 
         <Route path="/disease-history" element={<DiseaseHistory />} />
         <Route path="/view-doctor" element={<ViewDoctor />} />
         <Route path="/view-nurse" element={<ViewNurse />} />
