@@ -22,7 +22,6 @@ const Dashboard = () => {
         <Link to="/create-department" className="btn">Create Department</Link>
         <Link to="/create-user" className="btn">Create User</Link>
         <Link to="/disease-history" className="btn">View Disease History</Link>
-        <Link to="/create-doctor" className="btn">Create Doctor</Link>
         <Link to="/view-doctor" className="btn">View Doctor</Link>
         <Link to="/delete-doctor" className="btn">Delete Doctor</Link>
         <Link to="/view-nurse" className="btn">View Nurse</Link>

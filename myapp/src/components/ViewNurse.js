@@ -39,7 +39,7 @@ const ViewNurses = () => {
   }
 
   return (
-    <div className="view-nurses-container">
+    <div className="view-nurses-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
       <h2>Nurses List</h2>
       {nurses.length > 0 ? (
         <table>

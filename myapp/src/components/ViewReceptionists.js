@@ -40,7 +40,7 @@ const ViewReceptionists = () => {
   }
 
   return (
-    <div className="view-receptionists-container">
+    <div className="view-receptionists-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
       <h2>Receptionists List</h2>
       {receptionists.length > 0 ? (
         <table>

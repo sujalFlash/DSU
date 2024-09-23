@@ -81,7 +81,7 @@ const HospitalsPage = () => {
   }
 
   return (
-    <div>
+    <div style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
       <h1 className='hp-title'>Hospital List</h1>
       <ul>
         {hospitals.map((hospital) => (

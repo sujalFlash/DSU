@@ -40,7 +40,7 @@ const ViewCleaners = () => {
   }
 
   return (
-    <div className="view-cleaners-container">
+    <div className="view-cleaners-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
       <h2>Cleaners List</h2>
       {cleaners.length > 0 ? (
         <table className="cleaners-table">
