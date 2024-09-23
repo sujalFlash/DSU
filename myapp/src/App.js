@@ -23,6 +23,8 @@ import CreateDoctor from './components/CreateDoctor';
 import CreateNurse from './components/CreateNurse';
 import CreateReceptionist from './components/CreateReceptionist';
 import ViewReceptionist from './components/ViewReceptionist';
+import CreateCleaner from './components/CreateCleaner';
+
 
 
 function App() {
@@ -50,6 +52,7 @@ function App() {
         <Route path="/view-receptionists" element={<ViewReceptionists />} />
         <Route path="/delete-receptionist" element={<DeleteReceptionist />} />
         <Route path="/create-receptionist" element={<CreateReceptionist />} />
+        <Route path="/create-cleaner" element={<CreateCleaner/>} />
         <Route path="/view-receptionist" element={<ViewReceptionist />} />
       </Routes>
     </Router>

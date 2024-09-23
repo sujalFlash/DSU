@@ -98,9 +98,10 @@ const ViewDoctors = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setUpdatedDoctor({
       ...updatedDoctor,
-      [e.target.name]: e.target.value,
+      [name]: name === 'is_in_hospital' || name === 'on_duty' ? value === 'true' : value, // Ensure boolean values are properly handled
     });
   };
 
