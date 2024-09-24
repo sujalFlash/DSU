@@ -153,11 +153,19 @@ class WorkManager(models.Model):
     def save(self, *args, **kwargs):
         # Save the instance first so that it gets an ID and can be used in M2M relationships
         super().save(*args, **kwargs)
-        for department in self.departments.all():
-            if department.hospital != self.hospital:
-                raise ValidationError(
-                    f"WorkManager's hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
-                )
+
+        departments = kwargs.get('departments', None)
+
+        if departments is not None:
+            # Validate that the hospital of each department matches the hospital of the WorkManager
+            for department in departments:
+                if department.hospital != self.hospital:
+                    raise ValidationError(
+                        f"WorkManager's hospital ({self.hospital}) and department's hospital ({department.hospital}) must match."
+                    )
+
+            # Set the departments (associate them with the WorkManager)
+            self.departments.set(departments)
 
     def __str__(self):
         return f"{self.name}"
