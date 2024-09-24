@@ -53,7 +53,7 @@ def create_disease(request):
 
     if is_doctor or is_manager:
         data = request.data.copy()  # Make a mutable copy of the request data
-        data['hospital'] = user.hospital
+        data['hospital'] = user.hospital.id
         serializer = DiseaseSerializer(data=data)
 
         if serializer.is_valid():

@@ -185,3 +185,12 @@ class WorkAssignment(models.Model):
 
     def __str__(self):
         return f"{self.work_manager}: {self.work_name} for {self.staff_member} start: {self.assigned_date}, end: {self.end_date}"
+
+
+
+
+
+
+
+
+
