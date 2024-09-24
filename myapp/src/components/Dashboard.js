@@ -18,7 +18,7 @@ const Dashboard = () => {
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
       <div className="dashboard-buttons">
-        <Link to="/image-management" className="btn">Image Management</Link>
+      <Link to="/image-management" className="btn">Image Management</Link>
         <Link to="/create-department" className="btn">Create Department</Link>
         <Link to="/create-user" className="btn">Create User</Link>
         <Link to="/disease-history" className="btn">View Disease History</Link>

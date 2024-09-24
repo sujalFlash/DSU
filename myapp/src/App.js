@@ -5,7 +5,6 @@ import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import Dashboard from './components/Dashboard';
-import ImageManagement from './components/ImageManagement';
 import CreateDepartment from './components/CreateDepartment';
 import ListDepartment from './components/ListDepartment';
 import HospitalsPage from './components/HospitalsPage';
@@ -26,6 +25,9 @@ import ViewReceptionist from './components/ViewReceptionist';
 import CreateCleaner from './components/CreateCleaner';
 import ViewDepartment from './components/ViewDepartment';
 import AddDisease from './components/AddDisease';
+import ImageManagement from './components/ImageManagement';
+import ImageAugmentation from './components/ImageAugmentation';
+import ImageProcessing from './components/ImageProcessing';
 
 
 
@@ -37,7 +39,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/image-management" element={<ImageManagement />}/>
         <Route path="/create-department" element={<CreateDepartment />} />
         <Route path="/list-department" element={<ListDepartment />} />
         <Route path="/hospitals" element={<HospitalsPage />} />
@@ -58,6 +59,9 @@ function App() {
         <Route path="/view-receptionist" element={<ViewReceptionist />} />
         <Route path="/view-department" element={<ViewDepartment />} />
         <Route path="/add-disease" element={<AddDisease />} />
+        <Route path="/image-management" element={<ImageManagement />} />
+        <Route path="/image-management/augmentation" element={<ImageAugmentation />} />
+        <Route path="/image-management/processing" element={<ImageProcessing />} />
       </Routes>
     </Router>
   );
