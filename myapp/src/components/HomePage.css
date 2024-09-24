@@ -7,7 +7,7 @@
 
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   color: white;
   margin: 0; /* Ensure no extra margin */
   height: 100vh; /* Ensure the body takes up the full viewport height */
@@ -24,7 +24,7 @@ body::before {
   background-image: url('../images/bodyimg1.jpeg');
   background-size: cover;
   background-position: center;
-  filter: blur(7px); /* Adjust the blur level */
+  filter: blur(5px); /* Adjust the blur level */
   z-index: -1; /* Send the pseudo-element behind the main content */
 }
 
@@ -83,19 +83,19 @@ body::before {
 /* First Section: AI-Powered Healthcare Solutions */
 .container {
   display: flex;
-  width: 65vw;
+  width: 60vw;
   padding: 0 50px;
   height: 75vh;
-  background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 20px;
   margin-top: 5rem;
   margin:  0 auto;
   align-items: center;
   margin-bottom: 5rem;
   align-items: center; /* Center children horizontally */
   justify-content: center;
+
 }
 
 .fst{
@@ -154,6 +154,7 @@ body::before {
   justify-content: space-between;
   align-items: center;
   padding: 50px;
+
 }
 
 .medical-image {
@@ -185,7 +186,7 @@ body::before {
 
 .number {
   width: 50px;
-  height: 50px;
+  height: 30px;
   border: 2px solid #00FFB9;
   border-radius: 50%;
   display: flex;
@@ -210,15 +211,14 @@ body::before {
   flex-direction: column; /* Stack children vertically */
   align-items: center; /* Center children horizontally */
   justify-content: center;
-  width: 65vw;
+  width: 60vw;
   padding: 0 50px;
-  height: 65vh;
-  background:  #020c39;
-  border-radius: 25px;
+  height: 50vh;
+  border-radius: 40px;
   margin: 5rem auto;  
   background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   
 }
@@ -240,7 +240,6 @@ body::before {
 }
 
 .workflow-card {
-  background-color: #192c4c;
   padding: 15px;
   border-radius: 8px;
   width: 30%; /* Adjust width to fit cards */
@@ -263,14 +262,14 @@ body::before {
   display: flex;
   flex-direction: column; /* Stack title and cards vertically */
   align-items: center; /* Center-align title and cards horizontally */
-  width: 65vw;
+  width: 60vw;
   padding: 0 50px;
-  height: 65vh;
+  height: 50vh;
   margin: 5rem auto;
   justify-content: center;
   background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
 }
 
@@ -315,13 +314,13 @@ body::before {
   flex-direction: column; /* Stack title and steps vertically */
   align-items: center; /* Center-align title and steps horizontally */
   justify-content: center;
-  width: 65vw;
+  width: 60vw;
   padding: 0 50px;
-  height: 65vh;
+  height: 50vh;
   margin: 5rem auto;
   background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
 }
 
@@ -372,8 +371,8 @@ body::before {
 }
 /* XrayReport.css */
 .xray {
-width: 65vw;
-height: 65vh;
+width: 60vw;
+height: 50vh;
 }
 
 .xray-card {
@@ -414,23 +413,16 @@ height: 65vh;
 }
 
 .xray-analysis ul {
-  list-style-type: none;
+  list-style-type: disc;
   padding: 0;
 }
 
 .xray-analysis li {
   font-size: 18px;
-  margin: 10px 0;
+  margin: 5px ;
+  margin-left: 15px;
 }
 
-.xray-analysis li:before {
-  content: '>';
-  color: #00FFB9; /* purple color */
-  font-weight: bold;
-  display: inline-block;
-  width: 1em;
-  margin-right: 10px;
-}
 /* UrgentCases.css */
 
 
@@ -440,11 +432,12 @@ height: 65vh;
 }
 
 .priority-table {
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   overflow: hidden;
+  height: 60vh;
 }
 
 .priority-table th, .priority-table td {
@@ -486,6 +479,7 @@ height: 65vh;
 .left-content {
   width: 50%;
   padding-right: 20px;
+  margin-right: 2rem;
 }
 
 .left-content h1 {
@@ -500,7 +494,9 @@ height: 65vh;
 }
 
 .feature .icon {
-  margin-right: 15px;
+  margin-right: 30px;
+  width: 30px;
+  height: 30px;
   color: #00c8ff; /* Customize the icon color */
 }
 
@@ -542,6 +538,7 @@ height: 65vh;
 .eqtitle {
   font-size: 28px;
   margin-bottom: 20px;
+  margin-top: 30px;
 }
 
 .list {
@@ -555,18 +552,30 @@ height: 65vh;
   margin-bottom: 15px;
 }
 
-.icon {
+ .listItem .icon {
   margin-right: 10px;
-  font-size: 2rem;
-  color: #00FFB9; /* Accent color for icons */
+  width: 30px;
+  height: 30px;
+  color: #00FFB9; 
+  margin-right: 50px;
 }
+
+.list div{
+  position: relative;
+  right: 3%;
+}
+
+.list div h4{
+  margin-bottom: 5px;
+}
+
 .card-container {
   background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
   padding: 60px;
-  width: 1000px; /* Set a width similar to the image */
+  width: 60vw; /* Set a width similar to the image */
   margin: 20px auto; /* Center align horizontally */
   margin-bottom: 5rem;
 }

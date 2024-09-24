@@ -295,6 +295,8 @@ const HomePage = () => {
         </ul>
       </div>
     </div>
+
+    
     <div className="card-container">
       <div className="card-content">
         <h2>Connecting Hospitals for Medicine Sharing</h2>
