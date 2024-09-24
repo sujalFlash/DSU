@@ -24,6 +24,8 @@ import CreateNurse from './components/CreateNurse';
 import CreateReceptionist from './components/CreateReceptionist';
 import ViewReceptionist from './components/ViewReceptionist';
 import CreateCleaner from './components/CreateCleaner';
+import ViewDepartment from './components/ViewDepartment';
+import AddDisease from './components/AddDisease';
 
 
 
@@ -54,6 +56,8 @@ function App() {
         <Route path="/create-receptionist" element={<CreateReceptionist />} />
         <Route path="/create-cleaner" element={<CreateCleaner/>} />
         <Route path="/view-receptionist" element={<ViewReceptionist />} />
+        <Route path="/view-department" element={<ViewDepartment />} />
+        <Route path="/add-disease" element={<AddDisease />} />
       </Routes>
     </Router>
   );

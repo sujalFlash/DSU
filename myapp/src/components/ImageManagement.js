@@ -1,66 +1,76 @@
 import React, { useState } from 'react';
-import './ImageManagement.css';
 
 const ImageManagement = () => {
-  const [activeModal, setActiveModal] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [augmentedImage, setAugmentedImage] = useState(null);
+  const [error, setError] = useState(null);
 
-  const openModal = (modal) => setActiveModal(modal);
-  const closeModal = () => setActiveModal(null);
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+
+    if (file && file.name.endsWith('.dcm')) {
+      setSelectedImage(file);
+      setError(null); // Clear any previous error
+    } else {
+      setError('Please upload a valid .dcm image.');
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedImage) {
+      setError('No image selected.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', selectedImage);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/image_augmentation/augment/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob); // Convert blob to object URL
+        setAugmentedImage(imageUrl);
+        setError(null); // Clear any previous error
+      } else {
+        setError('Failed to augment the image.');
+      }
+    } catch (err) {
+      console.error('Error during image augmentation:', err);
+      setError('An error occurred while augmenting the image.');
+    }
+  };
 
   return (
-    <div>
-      <h1 className='im-title'>Image Management</h1>
-      <div className='im-buttons'>
-        <button className='hbtn' onClick={() => openModal('view')}>View Images</button>
-        <button className='hbtn' onClick={() => openModal('upload')}>Upload Image</button>
-        <button className='hbtn' onClick={() => openModal('delete')}>Delete Image</button>
+    <div className="image-management-container">
+      <h2>Image Augmentation</h2>
+
+      <div className="image-upload">
+        <input type="file" accept=".dcm" onChange={handleImageUpload} />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {selectedImage && <p>Selected Image: {selectedImage.name}</p>}
+        <button onClick={handleSubmit}>Submit for Augmentation</button>
       </div>
 
-      {/* View Images Modal */}
-      {activeModal === 'view' && (
-        <div className='modal-container' style={{ border: '1px solid black', padding: '20px', margin: '20px' }}>
-          <h2>View Images</h2>
-          {/* You can add your logic to show images here */}
+      <div className="image-display">
+        {selectedImage && (
           <div>
-            <p>List of images will appear here...</p>
+            <h3>Uploaded Image:</h3>
+            <p>{selectedImage.name}</p> {/* You can't directly display .dcm images in the browser */}
           </div>
-          <button type="button" onClick={closeModal}>Close</button>
-        </div>
-      )}
+        )}
 
-      {/* Upload Image Modal */}
-      {activeModal === 'upload' && (
-        <div className='modal-container' style={{ border: '1px solid black', padding: '20px', margin: '20px' }}>
-          <h2>Upload Image</h2>
-          <form>
-            <div>
-              <label>Select Image:</label>
-              <input type="file" />
-            </div>
-            <div className='sline'>
-              <button type="submit">Upload Image</button>
-              <button type="button" onClick={closeModal}>Close</button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* Delete Image Modal */}
-      {activeModal === 'delete' && (
-        <div className='modal-container' style={{ border: '1px solid black', padding: '20px', margin: '20px' }}>
-          <h2>Delete Image</h2>
-          <form>
-            <div>
-              <label>Image ID or Name:</label>
-              <input type="text" />
-            </div>
-            <div className='sline'>
-              <button type="submit">Delete Image</button>
-              <button type="button" onClick={closeModal}>Close</button>
-            </div>
-          </form>
-        </div>
-      )}
+        {augmentedImage && (
+          <div>
+            <h3>Augmented Image:</h3>
+            <img src={augmentedImage} alt="Augmented" style={{ maxWidth: '100%', height: 'auto' }} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
