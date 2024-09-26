@@ -57,36 +57,86 @@ const ImageAugmentation = () => {
   };
 
   return (
-    <div className="image-management-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
-      <h2>Image Augmentation</h2>
+    <div
+      style={{
+        maxWidth: '600px',
+        margin: '0 auto',
+        padding: '20px',
+        borderRadius: '20px',
+        height: '80vh',
+        overflowY: 'scroll', // Enable scrolling
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none', // Internet Explorer and Edge
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        marginTop:'50px',
+      backgroundColor: '#f9f9f9',
 
-      <div className="image-upload">
-        <input type="file" accept=".dcm" onChange={handleImageUpload} />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {selectedImage && <p>Selected Image: {selectedImage.name}</p>}
-        <button onClick={handleSubmit} disabled={isSubmitting}> {/* Disable button during submission */}
+      }}
+    >
+      {/* Hiding scrollbar for WebKit (Chrome, Safari) */}
+      <style>
+        {`
+          /* Chrome, Safari and Opera */
+          ::-webkit-scrollbar {
+            display: none;
+          }
+        `}
+      </style>
+
+      <h2 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center', color:'#1b1b27' }}>Image Augmentation</h2>
+
+      <div style={{ marginBottom: '20px' }}>
+        <input 
+          type="file" 
+          accept=".dcm" 
+          onChange={handleImageUpload} 
+          style={{ padding: '10px', fontSize: '16px', borderRadius: '4px', border: '1px solid #1b1b27', width: '100%' }}
+        />
+        {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+        {selectedImage && <p style={{ marginTop: '10px', fontSize: '16px', color:'#1b1b27' }}>Selected Image: {selectedImage.name}</p>}
+        <button 
+          onClick={handleSubmit} 
+          disabled={isSubmitting} 
+          style={{
+            marginTop: '20px',
+            padding: '12px 20px',
+            backgroundColor: isSubmitting ? '#1b1b27' : '#1b1b27',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: isSubmitting ? 'not-allowed' : 'pointer',
+            fontSize: '16px',
+            transition: 'background-color 0.3s ease',
+            width: '100%',
+          }}
+        >
           {isSubmitting ? 'Processing...' : 'Submit for Augmentation'}
         </button>
       </div>
 
-      <div className="image-display">
+      <div style={{ marginTop: '40px' }}>
         {selectedImage && (
-          <div>
-            <h3>Uploaded Image:</h3>
-            <p>{selectedImage.name}</p> {/* You can't directly display .dcm images in the browser */}
+          <div style={{ marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '20px', marginBottom: '10px' , color:'#1b1b27' }}>Uploaded Image:</h3>
+            <p style={{ fontSize: '16px', color:'#1b1b27' }}>{selectedImage.name}</p>
           </div>
         )}
 
         {augmentedImage && (
-          <div>
-            <h3>Augmented Image:</h3>
+          <div style={{ textAlign: 'center' }}>
+            <h3 style={{ fontSize: '20px', marginBottom: '10px' }}>Augmented Image:</h3>
             <img 
               src={augmentedImage} 
               alt="Augmented" 
-              style={{ 
-                width: '600px', 
-                height: '400px', 
-                objectFit: 'contain', 
+              style={{
+                width: '100%',
+                maxWidth: '600px',
+                height: 'auto',
+                objectFit: 'contain',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               }} 
             />
           </div>

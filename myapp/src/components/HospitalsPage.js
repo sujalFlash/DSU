@@ -172,21 +172,21 @@ const HospitalsPage = () => {
             <p>Email: {hospital.email}</p>
 
             <button
-              className="view-facilities-btn"
+              className="btn"
               onClick={() => viewFacilities(hospital.id)}
             >
               View Facilities
             </button>
 
             <button
-              className="view-departments-btn"
+              className="btn"
               onClick={() => viewDepartments(hospital.name)}
             >
               View Departments
             </button>
 
             <button
-              className="view-managers-btn"
+              className="btn"
               onClick={() => viewManagers(hospital.id)}
             >
               View Managers
@@ -222,7 +222,8 @@ const HospitalsPage = () => {
               </div>
             )}
 
-            {managers[hospital.id] && (
+          
+          {managers[hospital.id] && (
               <div className="hospital-managers">
                 <h3>All Managers:</h3>
                 <ul>

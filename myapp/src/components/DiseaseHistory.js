@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal'; // You can also use another modal library
+import Modal from 'react-modal';
 
 // Function to get access token from localStorage
 const getAccessToken = () => {
@@ -67,12 +67,14 @@ const DiseaseHistory = () => {
 
   const handleUpdateSeverity = async () => {
     const accessToken = getAccessToken();
-    
+  
     if (!accessToken) {
       setError('Access token is missing');
       return;
     }
-
+  
+    console.log('Access Token:', accessToken); // Log the token
+  
     try {
       const response = await fetch(`http://127.0.0.1:8000/disease-history/${currentId}/`, {
         method: 'PATCH',
@@ -80,22 +82,22 @@ const DiseaseHistory = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ severity: currentSeverity }), // Only sending severity
+        body: JSON.stringify({ severity: currentSeverity }),
       });
-
+  
       if (response.ok) {
-        // Refresh the disease history after update
         await fetchDiseaseHistory();
         closeModal();
       } else {
-        const responseText = await response.text();
-        setError('Failed to update severity: ' + responseText);
+        const responseData = await response.json();
+        setError('Failed to update severity: ' + (responseData.detail || responseData));
       }
     } catch (err) {
       console.error('Network error:', err);
       setError('An error occurred while updating severity');
     }
   };
+  
 
   if (loading) {
     return <div>Loading...</div>;
@@ -106,35 +108,43 @@ const DiseaseHistory = () => {
   }
 
   return (
-    <div className="disease-history-container">
-      <h2>Disease History</h2>
+    <div className="disease-history-container" style={{ padding: '20px' }}>
+      <h2 style={{ color: '#1b1b27', marginBottom: '30px' }}>Disease History</h2>
       {diseaseHistory.length > 0 ? (
-        <table className="disease-history-table">
+        <table
+          className="disease-history-table"
+          style={{
+            color: '#1b1b27',
+            width: '100%',
+            borderCollapse: 'collapse',
+            marginBottom: '20px',
+          }}
+        >
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Patient Name</th>
-              <th>Disease</th>
-              <th>Hospital</th>
-              <th>Date Diagnosed</th>
-              <th>Status</th>
-              <th>Severity</th>
-              <th>Admitted</th>
-              <th>Actions</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>ID</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Patient Name</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Disease</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Hospital</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Date Diagnosed</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Status</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Severity</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Admitted</th>
+              <th style={{ padding: '10px', borderBottom: '2px solid #1b1b27' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {diseaseHistory.map((history) => (
               <tr key={history.id}>
-                <td>{history.id}</td>
-                <td>{history.patient_name}</td>
-                <td>{history.disease_name}</td>
-                <td>{history.hospital_name}</td>
-                <td>{history.date_diagnosed}</td>
-                <td>{history.status}</td>
-                <td>{history.severity}</td>
-                <td>{history.is_admitted ? 'Yes' : 'No'}</td>
-                <td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.id}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.patient_name}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.disease_name}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.hospital_name}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.date_diagnosed}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.status}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.severity}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>{history.is_admitted ? 'Yes' : 'No'}</td>
+                <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>
                   <button onClick={() => openModal(history.id, history.severity)}>Update Severity</button>
                 </td>
               </tr>
@@ -146,7 +156,29 @@ const DiseaseHistory = () => {
       )}
 
       {/* Modal for updating severity */}
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <Modal 
+        isOpen={modalIsOpen} 
+        onRequestClose={closeModal}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '300px', // Set width to 200px
+            height: '300px', // Set height to 200px
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark background for the overlay
+          },
+        }}
+      >
         <h2>Update Severity</h2>
         <label>
           Severity:

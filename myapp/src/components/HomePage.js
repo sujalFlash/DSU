@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate,Link } from 'react-router-dom'; // Import useNavigate hook
 import './HomePage.css';
-import Image1 from '../images/img1.jpg';
+import Image1 from '../images/img1.png';
 import Image2 from '../images/img2.png'; 
-import Image3 from '../images/img3.jpg'; 
+import Image3 from '../images/img3.png'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloud, faLink, faShareAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import pacsImage from '../images/img4.png';
 import { faSyncAlt, faCheckCircle, faDollarSign } from '@fortawesome/free-solid-svg-icons';
-import trackImg from '../images/img5.png';
+
 
 const HomePage = () => {
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
@@ -53,8 +53,8 @@ const HomePage = () => {
           <p className="subtitle">
             Revolutionizing healthcare with intelligent technology for better patient care and outcomes.
           </p>
-          <button className="learn-more-button" onClick={goToLoginPage}>Login</button>
-          <button className="learn-more-button" onClick={goToSignupPage}>Signup</button>
+          <button className="lbutton" onClick={goToLoginPage}>Login</button>
+          <button className="lbutton" onClick={goToSignupPage}>Signup</button>
         </div>
         <div className="image-section">
           <img src={Image1} alt="Healthcare Solutions" className="hospital-image" />
@@ -176,7 +176,7 @@ const HomePage = () => {
      
  <div className="container xray">
       <div className="xray-card">
-         <img src={Image3} alt="X-ray Skeleton" className="xray-image" />
+         <img src={Image3} alt="X-ray Skeleton" className="xray-image" style={{width:'300px',height:'350px'}}/>
       </div>
     
       <div className="xray-analysis">
@@ -246,20 +246,12 @@ const HomePage = () => {
         </div>
       </div>
       <div className="right-content">
-        <img src={pacsImage} alt="PACS System" />
+        <img src={pacsImage} alt="PACS System" style={{width:'250px',height:'500px'}}/>
       </div>
     </div>
   
 
     <div className="container">
-      <div className="leftPane">
-        {/* Left pane with images or other content */}
-        <img 
-          src={trackImg}
-          alt="Tracking equipment" 
-          className="image"
-        />
-      </div>
 
       <div className="rightPane">
         <h2 className="eqtitle">Equipment Tracking and Fulfillment</h2>

@@ -51,7 +51,7 @@ const CreateDepartment = () => {
   return (
     <div className="create-department-container">
       <div className="dept">
-        <h1>Create Department</h1>
+        <h1 style={{color:'#1b1b27',marginBottom:'25px'}}>Create Department</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
