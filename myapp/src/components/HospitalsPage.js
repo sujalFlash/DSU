@@ -23,25 +23,6 @@ const HospitalsPage = () => {
       });
   }, []);
 
-  const refreshAccessToken = () => {
-    return fetch('http://127.0.0.1:8000/api/token/refresh/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refresh: localStorage.getItem('refreshToken') }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.access) {
-          localStorage.setItem('accessToken', data.access); // Update access token in localStorage
-          return data.access;
-        } else {
-          throw new Error('Unable to refresh access token');
-        }
-      });
-  };
-
   const viewFacilities = (hospitalId) => {
     setClickCounts((prevCounts) => ({
       ...prevCounts,
@@ -111,31 +92,20 @@ const HospitalsPage = () => {
       [hospitalId]: (prevCounts[hospitalId] || 0) + 1,
     }));
 
-    const fetchManagers = (token) => {
+    const fetchManagers = () => {
       return fetch('http://127.0.0.1:8000/api/view_managers/', {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       });
     };
 
-    const handleFetchManagers = (token) => {
-      fetchManagers(token)
-        .then((response) => {
-          if (response.status === 401) {
-            // Token might be expired, try refreshing it
-            return refreshAccessToken().then((newToken) => {
-              // Retry with new token
-              return fetchManagers(newToken);
-            });
-          } else {
-            return response.json();
-          }
-        })
+    if ((clickCounts[hospitalId] || 0) % 2 === 1) {
+      fetchManagers()
+        .then((response) => response.json())
         .then((data) => {
-          console.log('Fetched managers:', data);
           setManagers((prevManagers) => ({
             ...prevManagers,
             [hospitalId]: Array.isArray(data) && data.length > 0 ? data : null,
@@ -144,10 +114,6 @@ const HospitalsPage = () => {
         .catch((error) => {
           console.error('Error fetching managers:', error);
         });
-    };
-
-    if ((clickCounts[hospitalId] || 0) % 2 === 0) {
-      handleFetchManagers(accessToken);
     } else {
       setManagers((prevManagers) => ({
         ...prevManagers,
@@ -222,8 +188,7 @@ const HospitalsPage = () => {
               </div>
             )}
 
-          
-          {managers[hospital.id] && (
+             {managers[hospital.id] && (
               <div className="hospital-managers">
                 <h3>All Managers:</h3>
                 <ul>

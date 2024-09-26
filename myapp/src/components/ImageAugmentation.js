@@ -4,17 +4,17 @@ const ImageAugmentation = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [augmentedImage, setAugmentedImage] = useState(null);
   const [error, setError] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state to handle submission
-  const accessToken = localStorage.getItem('accessToken'); // Retrieve the access token from localStorage
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
 
     if (file && file.name.endsWith('.dcm')) {
       setSelectedImage(file);
-      setAugmentedImage(null); // Clear previously augmented image if a new one is selected
-      setError(null); // Clear any previous error
-      setIsSubmitting(false); // Reset submission state when a new image is uploaded
+      setAugmentedImage(null);
+      setError(null);
+      setIsSubmitting(false);
     } else {
       setError('Please upload a valid .dcm image.');
     }
@@ -26,7 +26,7 @@ const ImageAugmentation = () => {
       return;
     }
 
-    setIsSubmitting(true); // Disable button after submission
+    setIsSubmitting(true);
 
     const formData = new FormData();
     formData.append('image', selectedImage);
@@ -35,16 +35,16 @@ const ImageAugmentation = () => {
       const response = await fetch('http://127.0.0.1:8000/api/image_augmentation/augment/', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${accessToken}`, // Include the access token in the Authorization header
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: formData,
       });
 
       if (response.ok) {
         const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob); // Convert blob to object URL
+        const imageUrl = URL.createObjectURL(blob);
         setAugmentedImage(imageUrl);
-        setError(null); // Clear any previous error
+        setError(null);
       } else {
         setError('Failed to augment the image.');
       }
@@ -52,26 +52,23 @@ const ImageAugmentation = () => {
       console.error('Error during image augmentation:', err);
       setError('An error occurred while augmenting the image.');
     } finally {
-      setIsSubmitting(false); // Re-enable button after submission is complete
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div
       style={{
-        maxWidth: '600px',
+        maxWidth: '450px',
         margin: '0 auto',
         padding: '20px',
         borderRadius: '20px',
-        height: '80vh',
-        overflowY: 'scroll', // Enable scrolling
-        scrollbarWidth: 'none', // Firefox
-        msOverflowStyle: 'none', // Internet Explorer and Edge
+        overflowY: 'auto', // Enable scrolling
+        maxHeight: '80vh', // Set a max height for scrolling
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
-        marginTop:'50px',
-      backgroundColor: '#f9f9f9',
-
+        marginTop: '50px',
+        backgroundColor: '#f9f9f9',
       }}
     >
       {/* Hiding scrollbar for WebKit (Chrome, Safari) */}
@@ -84,7 +81,7 @@ const ImageAugmentation = () => {
         `}
       </style>
 
-      <h2 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center', color:'#1b1b27' }}>Image Augmentation</h2>
+      <h2 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center', color: '#1b1b27' }}>Image Augmentation</h2>
 
       <div style={{ marginBottom: '20px' }}>
         <input 
@@ -94,7 +91,7 @@ const ImageAugmentation = () => {
           style={{ padding: '10px', fontSize: '16px', borderRadius: '4px', border: '1px solid #1b1b27', width: '100%' }}
         />
         {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
-        {selectedImage && <p style={{ marginTop: '10px', fontSize: '16px', color:'#1b1b27' }}>Selected Image: {selectedImage.name}</p>}
+        {selectedImage && <p style={{ marginTop: '10px', fontSize: '16px', color: '#1b1b27' }}>Selected Image: {selectedImage.name}</p>}
         <button 
           onClick={handleSubmit} 
           disabled={isSubmitting} 
@@ -118,14 +115,14 @@ const ImageAugmentation = () => {
       <div style={{ marginTop: '40px' }}>
         {selectedImage && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '20px', marginBottom: '10px' , color:'#1b1b27' }}>Uploaded Image:</h3>
-            <p style={{ fontSize: '16px', color:'#1b1b27' }}>{selectedImage.name}</p>
+            <h3 style={{ fontSize: '20px', marginBottom: '10px', color: '#1b1b27' }}>Uploaded Image:</h3>
+            <p style={{ fontSize: '16px', color: '#1b1b27' }}>{selectedImage.name}</p>
           </div>
         )}
 
         {augmentedImage && (
           <div style={{ textAlign: 'center' }}>
-            <h3 style={{ fontSize: '20px', marginBottom: '10px' }}>Augmented Image:</h3>
+            <h3 style={{ fontSize: '20px', marginBottom: '10px', color: '#1b1b27' }}>Augmented Image:</h3>
             <img 
               src={augmentedImage} 
               alt="Augmented" 

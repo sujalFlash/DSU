@@ -74,25 +74,22 @@ const ImageProcessing = () => {
   return (
     <div
       style={{
-        maxWidth: '600px',
+        maxWidth: '500px',
         margin: '0 auto',
         padding: '20px',
         borderRadius: '20px',
-        height: '80vh',
-        overflowY: 'scroll',
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none',
+        overflowY: 'auto', // Enable scrolling
+        maxHeight: '80vh', // Set a max height for scrolling
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         marginTop: '50px',
-       backgroundColor: '#f9f9f9',
-
+        backgroundColor: '#f9f9f9',
       }}
     >
       <style>
         {`
           ::-webkit-scrollbar {
-            display: none;
+            display: none; /* Hides scrollbar in WebKit browsers */
           }
         `}
       </style>
@@ -158,7 +155,7 @@ const ImageProcessing = () => {
 
       {processedImage && (
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <h3 style={{ fontSize: '20px', marginBottom: '10px' }}>Processed Image:</h3>
+          <h3 style={{ fontSize: '20px', marginBottom: '10px', color: '#1b1b27'}}>Processed Image:</h3>
           <img
             src={processedImage}
             alt="Processed"

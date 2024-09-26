@@ -106,6 +106,11 @@ const ViewDoctors = () => {
     });
   };
 
+  const handleCancel = () => {
+    setEditingDoctor(null); // Close the modal
+    setUpdatedDoctor({}); // Reset the updated doctor data
+  };
+
   if (loading) {
     return <div style={{ textAlign: 'center', fontSize: '20px', color: '#555' }}>Loading...</div>;
   }
@@ -133,14 +138,14 @@ const ViewDoctors = () => {
                 Delete
               </button>
               <button
-  className="button button-update"
-  onClick={() => {
-    setEditingDoctor(doctor);
-    setUpdatedDoctor(doctor);
-  }}
->
-  Update
-</button>
+                className="button button-update"
+                onClick={() => {
+                  setEditingDoctor(doctor);
+                  setUpdatedDoctor(doctor);
+                }}
+              >
+                Update
+              </button>
             </li>
           ))}
         </ul>
@@ -148,29 +153,29 @@ const ViewDoctors = () => {
         <p style={{ textAlign: 'center', color: '#555' }}>No doctors available.</p>
       )}
 
-<Modal
-  isOpen={!!editingDoctor}
-  onRequestClose={() => setEditingDoctor(null)}
-  style={{
-    content: {
-      ...Modal.defaultStyles.content,
-      ...{
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '500px',
-        height:'500px',
-        padding: '20px',
-        borderRadius: '10px',
-        backgroundColor:'transparent',
-        border:'none',
-      },
-    },
-  }}
->
-  <div className="modal-content">
-    <h2>Update Doctor</h2>
-    <p>{editingDoctor ? `Updating: ${editingDoctor.name}` : 'No doctor selected'}</p>
+      <Modal
+        isOpen={!!editingDoctor}
+        onRequestClose={handleCancel}
+        style={{
+          content: {
+            ...Modal.defaultStyles.content,
+            ...{
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '500px',
+              height: '500px',
+              padding: '20px',
+              borderRadius: '10px',
+              backgroundColor: 'transparent',
+              border: 'none',
+            },
+          },
+        }}
+      >
+        <div className="modal-content">
+          <h2>Update Doctor</h2>
+          <p>{editingDoctor ? `Updating: ${editingDoctor.name}` : 'No doctor selected'}</p>
           <label>
             Shift:
             <select
@@ -221,9 +226,14 @@ const ViewDoctors = () => {
               <option value={false}>No</option>
             </select>
           </label>
-          <button className="button button-save" onClick={handleUpdate}>
-            Save
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+            <button className="button button-save" onClick={handleUpdate}>
+              Save
+            </button>
+            <button className="button button-cancel" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
         </div>
       </Modal>
     </div>

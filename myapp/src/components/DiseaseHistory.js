@@ -73,30 +73,33 @@ const DiseaseHistory = () => {
       return;
     }
   
-    console.log('Access Token:', accessToken); // Log the token
-  
     try {
-      const response = await fetch(`http://127.0.0.1:8000/disease-history/${currentId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/disease-history/${currentId}/`, { // Ensure the endpoint is correct
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ severity: currentSeverity }),
+        body: JSON.stringify({ severity: currentSeverity }), // Ensure server accepts this format
       });
   
-      if (response.ok) {
-        await fetchDiseaseHistory();
-        closeModal();
-      } else {
+      if (!response.ok) {
         const responseData = await response.json();
+        console.error('Update error:', responseData); // Log the error for debugging
         setError('Failed to update severity: ' + (responseData.detail || responseData));
+        return; // Exit if update fails
       }
+  
+      // Fetch the updated disease history
+      await fetchDiseaseHistory();
+      closeModal(); // Close the modal after successful update
     } catch (err) {
       console.error('Network error:', err);
       setError('An error occurred while updating severity');
     }
   };
+  
+  
   
 
   if (loading) {
@@ -179,7 +182,7 @@ const DiseaseHistory = () => {
           },
         }}
       >
-        <h2>Update Severity</h2>
+        <h2 style={{color:'#1b1b27',marginBottom:'20px'}}>Update Severity</h2>
         <label>
           Severity:
           <select

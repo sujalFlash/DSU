@@ -47,106 +47,96 @@ const CreateUser = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: '450px',
-        margin: '0 auto',
-        padding: '20px',
-        borderRadius: '20px',
-        height: '80vh',
-        overflowY: 'scroll',
-        scrollbarWidth: 'none',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        marginTop: '50px',
-        backgroundColor:'#f9f9f9',
-      }}
-    >
-      {/* Hiding scrollbar for WebKit (Chrome, Safari) */}
-      <style>
-        {`
-          ::-webkit-scrollbar {
-            display: none;
-          }
-        `}
-      </style>
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100vh', 
+      gap: '30px' // Gap between the two containers
+    }}>
+      <div
+        style={containerStyle}
+      >
+        <style>
+          {`
+            ::-webkit-scrollbar {
+              display: none;
+            }
+          `}
+        </style>
 
-      <h1 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center', color: '#1b1b27' }}>
-        Create New User
-      </h1>
+        <h1 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center', color: '#1b1b27' }}>
+          Create New User
+        </h1>
 
-      <form onSubmit={(e) => handleCreateUser(e, 'user')} style={{ marginBottom: '20px' }}>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ fontSize: '16px', color: '#1b1b27' }}>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{
-              width: '100%',
-              padding: '10px',
-              fontSize: '16px',
-              borderRadius: '4px',
-              border: '1px solid #1b1b27',
-              marginTop: '5px',
-            }}
-          />
-        </div>
+        <form onSubmit={(e) => handleCreateUser(e, 'user')} style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: '15px' }}>
+            <label style={{ fontSize: '16px', color: '#1b1b27' }}>Username:</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: '10px',
+                fontSize: '16px',
+                borderRadius: '4px',
+                border: '1px solid #1b1b27',
+                marginTop: '5px',
+              }}
+            />
+          </div>
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ fontSize: '16px', color: '#1b1b27' }}>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              width: '100%',
-              padding: '10px',
-              fontSize: '16px',
-              borderRadius: '4px',
-              border: '1px solid #1b1b27',
-              marginTop: '5px',
-            }}
-          />
-        </div>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ fontSize: '16px', color: '#1b1b27' }}>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: '10px',
+                fontSize: '16px',
+                borderRadius: '4px',
+                border: '1px solid #1b1b27',
+                marginTop: '5px',
+              }}
+            />
+          </div>
 
-        <button
-          type="submit"
-          style={{ ...buttonStyle, width: '100%' }} // Set width to 100% for full width
-        >
-          Create User
-        </button>
-      </form>
-
-      <h2 style={{ fontSize: '20px', marginBottom: '10px', color: '#1b1b27' }}>Create with Specific Roles</h2>
-      <div className="role-buttons" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <button
-          onClick={(e) => handleUser(e, 'doctor')}
-          style={buttonStyle}
-        >
-          Create Doctor
-        </button>
-        <button
-          onClick={(e) => handleUser(e, 'nurse')}
-          style={buttonStyle}
-        >
-          Create Nurse
-        </button>
-        <button
-          onClick={(e) => handleUser(e, 'receptionist')}
-          style={buttonStyle}
-        >
-          Create Receptionist
-        </button>
-        <button
-          onClick={(e) => handleUser(e, 'cleaner')}
-          style={buttonStyle}
-        >
-          Create Cleaner
-        </button>
+          <button
+            type="submit"
+            style={{ ...buttonStyle, width: '100%' }} // Set width to 100% for full width
+          >
+            Create User
+          </button>
+        </form>
       </div>
+
+      {/* Role Buttons Container */}
+   
+      <div style={containerStyle}>
+        <h2 style={{ fontSize: '20px', marginBottom: '10px', color: '#1b1b27', textAlign: 'center' }}>
+          Create with Specific Roles
+        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <button onClick={(e) => handleUser(e, 'doctor')} style={buttonStyle}>
+            Create Doctor
+          </button>
+          <button onClick={(e) => handleUser(e, 'nurse')} style={buttonStyle}>
+            Create Nurse
+          </button>
+          <button onClick={(e) => handleUser(e, 'receptionist')} style={buttonStyle}>
+            Create Receptionist
+          </button>
+          <button onClick={(e) => handleUser(e, 'cleaner')} style={buttonStyle}>
+            Create Cleaner
+          </button>
+        </div>
+      </div>
+
     </div>
   );
 };
@@ -160,9 +150,18 @@ const buttonStyle = {
   cursor: 'pointer',
   fontSize: '16px',
   transition: 'background-color 0.3s ease',
-  width: '40%', // Set width to 40% for role buttons
+  width: '100%', // Set width to 100% for role buttons
   textAlign: 'center',
-  margin: '0 auto',
 };
 
+const containerStyle={
+  maxWidth: '600px',
+          padding: '20px',
+          borderRadius: '20px',
+          overflowY: 'scroll',
+          scrollbarWidth: 'none',
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          backgroundColor: '#f9f9f9',
+}
 export default CreateUser;
