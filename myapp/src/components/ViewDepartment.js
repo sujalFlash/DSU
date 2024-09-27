@@ -42,15 +42,15 @@ const ViewDepartments = () => {
 
   return (
     <div className="department-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
-      <h2>Departments</h2>
+      <h2 style={{color:'#1b1b27',marginBottom:'25px'}}>Departments</h2>
       <ul>
         {departments.length === 0 ? (
-          <p>No departments found.</p>
+          <p  style={{color:'#1b1b27'}}>No departments found.</p>
         ) : (
           departments.map((department) => (
-            <li key={department.id}>
-              <strong>{department.name}</strong>
-              <p>ID: {department.id}</p>
+            <li key={department.id}  style={{backgroundColor:'#f9f9f9'}}>
+              <strong  style={{color:'#1b1b27'}}>{department.name}</strong>
+              <p style={{color:'#1b1b27'}}>ID: {department.id}</p>
             </li>
           ))
         )}

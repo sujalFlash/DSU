@@ -4,15 +4,14 @@ import { useNavigate } from 'react-router-dom';
 const CreateDoctor = () => {
   const [employeeId, setEmployeeId] = useState('');
   const [name, setName] = useState('');
-  const [areaAssigned, setAreaAssigned] = useState(''); // New state for area assigned
+  const [specialization, setSpecialization] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(''); // State for selected department
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
-  const userid = localStorage.getItem('newUserId');
+  const userId = localStorage.getItem('newUserId');
 
   useEffect(() => {
-    // Fetch department data for the dropdown
     fetch('http://127.0.0.1:8000/api/view_department/', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -28,11 +27,12 @@ const CreateDoctor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const doctorData = {
-      user_id: userid,
+      user_id: userId,
       employee_id: employeeId,
       name: name,
-      area_assigned: areaAssigned, // Include area assigned
-      department: parseInt(selectedDepartment), // Send selected department ID as an integer
+      specialization: specialization,
+      departments: [parseInt(selectedDepartment)],
+      role: 'doctor',
     };
 
     try {
@@ -52,7 +52,7 @@ const CreateDoctor = () => {
       }
 
       alert('Doctor created successfully!');
-      navigate('/view-doctor'); // Navigate to view doctor after creation
+      navigate('/view-doctor');
     } catch (err) {
       console.error('Error creating doctor:', err);
       alert('Failed to create doctor');
@@ -60,8 +60,8 @@ const CreateDoctor = () => {
   };
 
   return (
-    <div className="create-doctor-container">
-      <h2>Create Doctor</h2>
+    <div style={containerStyle}>
+      <h2 style={headerStyle}>Create Doctor</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -69,6 +69,7 @@ const CreateDoctor = () => {
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}
           required
+          style={inputStyle}
         />
         <input
           type="text"
@@ -76,30 +77,86 @@ const CreateDoctor = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          style={inputStyle}
         />
         <input
           type="text"
-          placeholder="Area Assigned"
-          value={areaAssigned}
-          onChange={(e) => setAreaAssigned(e.target.value)}
+          placeholder="Specialization"
+          value={specialization}
+          onChange={(e) => setSpecialization(e.target.value)}
           required
+          style={inputStyle}
         />
         <select
-          value={selectedDepartment} // Bind the state to the selected value
-          onChange={(e) => setSelectedDepartment(e.target.value)} // Handle selection change
+          value={selectedDepartment}
+          onChange={(e) => setSelectedDepartment(e.target.value)}
           required
+          style={selectStyle}
         >
-          <option value="">Select Department</option> {/* Default option */}
+          <option value="">Select Department</option>
           {departments.map((dept) => (
             <option key={dept.id} value={dept.id}>
               {dept.name}
             </option>
           ))}
         </select>
-        <button type="submit" className="btn">Create Doctor</button>
+        <button type="submit" style={submitButtonStyle}>
+          Create Doctor
+        </button>
       </form>
     </div>
   );
+};
+
+const containerStyle = {
+  maxWidth: '450px',
+  margin: '0 auto',
+  padding: '20px',
+  borderRadius: '20px',
+  overflowY: 'hidden', // Removed scrollbar
+  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  marginTop: '50px',
+  backgroundColor:'#f9f9f9',
+};
+
+const headerStyle = {
+  fontSize: '24px',
+  marginBottom: '20px',
+  textAlign: 'center',
+  color: '#1b1b27',
+};
+
+const inputStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  borderRadius: '4px',
+  border: '1px solid #1b1b27',
+  marginBottom: '15px',
+};
+
+const selectStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  borderRadius: '4px',
+  border: '1px solid #1b1b27',
+  marginBottom: '15px',
+  position: 'relative',
+  zIndex: 1,
+};
+
+const submitButtonStyle = {
+  width: '100%',
+  padding: '12px 20px',
+  backgroundColor: '#1b1b27',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontSize: '16px',
+  transition: 'background-color 0.3s ease',
 };
 
 export default CreateDoctor;

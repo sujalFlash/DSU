@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import './ViewDoctors.css'; // Import the CSS file
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
@@ -78,7 +79,7 @@ const ViewDoctors = () => {
       });
 
       if (!response.ok) {
-        console.log(response)
+        console.log(response);
         console.log(await response.json());
         throw new Error('Failed to update doctor');
       }
@@ -105,121 +106,135 @@ const ViewDoctors = () => {
     });
   };
 
+  const handleCancel = () => {
+    setEditingDoctor(null); // Close the modal
+    setUpdatedDoctor({}); // Reset the updated doctor data
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div style={{ textAlign: 'center', fontSize: '20px', color: '#555' }}>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error fetching data: {error}</div>;
+    return <div style={{ color: 'red', textAlign: 'center' }}>Error fetching data: {error}</div>;
   }
 
   return (
-    <div className="view-doctors-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
-      <h2>Doctors List</h2>
+    <div className="view-doctors-container">
+      <h1>Doctors List</h1>
       {doctors.length > 0 ? (
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {doctors.map((doctor) => (
-            <li key={doctor.id} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px' }}>
+            <li key={doctor.id} className="doctor-card">
               <h3>Doctor ID: {doctor.id}</h3>
-              <p>Name: {doctor.name || 'N/A'}</p>
-              <p>Specialization: {doctor.specialization || 'N/A'}</p>
-              <p>Hospital: {doctor.hospital || 'N/A'}</p>
-              <p>Shift: {doctor.shift || 'N/A'}</p>
-              <p>Status: {doctor.status || 'N/A'}</p>
-              <p>In Hospital: {doctor.is_in_hospital ? 'Yes' : 'No'}</p>
-              <p>On Duty: {doctor.on_duty ? 'Yes' : 'No'}</p>
-              <button onClick={() => handleDelete(doctor.id)} style={{ backgroundColor: 'red', color: 'white', marginRight: '10px' }}>
+              <p><strong>Name:</strong> {doctor.name || 'N/A'}</p>
+              <p><strong>Specialization:</strong> {doctor.specialization || 'N/A'}</p>
+              <p><strong>Hospital:</strong> {doctor.hospital || 'N/A'}</p>
+              <p><strong>Shift:</strong> {doctor.shift || 'N/A'}</p>
+              <p><strong>Status:</strong> {doctor.status || 'N/A'}</p>
+              <p><strong>In Hospital:</strong> {doctor.is_in_hospital ? 'Yes' : 'No'}</p>
+              <p><strong>On Duty:</strong> {doctor.on_duty ? 'Yes' : 'No'}</p>
+              <button className="button button-delete" onClick={() => handleDelete(doctor.id)}>
                 Delete
               </button>
-              <button onClick={() => { setEditingDoctor(doctor); setUpdatedDoctor(doctor); }} style={{ backgroundColor: 'blue', color: 'white' }}>
+              <button
+                className="button button-update"
+                onClick={() => {
+                  setEditingDoctor(doctor);
+                  setUpdatedDoctor(doctor);
+                }}
+              >
                 Update
               </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p>No doctors available.</p>
+        <p style={{ textAlign: 'center', color: '#555' }}>No doctors available.</p>
       )}
 
-      {/* Modal for updating doctor details */}
       <Modal
         isOpen={!!editingDoctor}
-        onRequestClose={() => setEditingDoctor(null)}
+        onRequestClose={handleCancel}
         style={{
           content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
-            width: '400px',
-            padding: '20px',
-            borderRadius: '10px',
+            ...Modal.defaultStyles.content,
+            ...{
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '500px',
+              height: '500px',
+              padding: '20px',
+              borderRadius: '10px',
+              backgroundColor: 'transparent',
+              border: 'none',
+            },
           },
         }}
       >
-        <h2>Update Doctor</h2>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          Shift:
-          <select
-            name="shift"
-            value={updatedDoctor.shift || ''}
-            onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
-          >
-            <option value="">Select</option>
-            <option value="Day">Day</option>
-            <option value="Night">Night</option>
-            <option value="Rotating">Rotating</option>
-          </select>
-        </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          Status:
-          <select
-            name="status"
-            value={updatedDoctor.status || ''}
-            onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
-          >
-            <option value="">Select</option>
-            <option value="free">Free </option>
-            <option value="working">working</option>
-            <option value="on_leave">On Leave</option>
-          </select>
-        </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          In Hospital:
-          <select
-            name="is_in_hospital"
-            value={updatedDoctor.is_in_hospital }
-            onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
-          >
-            <option value="">Select</option>
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
-          </select>
-        </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          On Duty:
-          <select
-            name="on_duty"
-            value={updatedDoctor.on_duty }
-            onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
-          >
-            <option value="">Select</option>
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
-          </select>
-        </label>
-        <button onClick={handleUpdate} style={{ backgroundColor: 'green', color: 'white', marginRight: '10px' }}>
-          Save Changes
-        </button>
-        <button onClick={() => setEditingDoctor(null)} style={{ backgroundColor: 'grey', color: 'white' }}>
-          Cancel
-        </button>
-        {error && <p className="error">{error}</p>}
+        <div className="modal-content">
+          <h2>Update Doctor</h2>
+          <p>{editingDoctor ? `Updating: ${editingDoctor.name}` : 'No doctor selected'}</p>
+          <label>
+            Shift:
+            <select
+              name="shift"
+              value={updatedDoctor.shift || ''}
+              onChange={handleChange}
+            >
+              <option value="">Select</option>
+              <option value="Day">Day</option>
+              <option value="Night">Night</option>
+              <option value="Rotating">Rotating</option>
+            </select>
+          </label>
+          <label>
+            Status:
+            <select
+              name="status"
+              value={updatedDoctor.status || ''}
+              onChange={handleChange}
+            >
+              <option value="">Select</option>
+              <option value="free">Free</option>
+              <option value="working">Working</option>
+              <option value="on_leave">On Leave</option>
+            </select>
+          </label>
+          <label>
+            In Hospital:
+            <select
+              name="is_in_hospital"
+              value={updatedDoctor.is_in_hospital}
+              onChange={handleChange}
+            >
+              <option value="">Select</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+            </select>
+          </label>
+          <label>
+            On Duty:
+            <select
+              name="on_duty"
+              value={updatedDoctor.on_duty}
+              onChange={handleChange}
+            >
+              <option value="">Select</option>
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+            </select>
+          </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+            <button className="button button-save" onClick={handleUpdate}>
+              Save
+            </button>
+            <button className="button button-cancel" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

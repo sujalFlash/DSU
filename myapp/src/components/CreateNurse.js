@@ -67,8 +67,8 @@ const CreateNurse = () => {
   };
 
   return (
-    <div className="create-nurse-container">
-      <h2>Create Nurse</h2>
+    <div style={containerStyle}>
+      <h2 style={headerStyle}>Create Nurse</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -76,6 +76,7 @@ const CreateNurse = () => {
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}
           required
+          style={inputStyle}
         />
         <input
           type="text"
@@ -83,6 +84,7 @@ const CreateNurse = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          style={inputStyle}
         />
         <input
           type="text"
@@ -90,11 +92,13 @@ const CreateNurse = () => {
           value={specialization}
           onChange={(e) => setSpecialization(e.target.value)}
           required
+          style={inputStyle}
         />
         <select
           value={selectedDepartment}
           onChange={(e) => setSelectedDepartment(e.target.value)}
           required
+          style={selectStyle}
         >
           <option value="">Select Department</option>
           {departments.map((dept) => (
@@ -103,10 +107,61 @@ const CreateNurse = () => {
             </option>
           ))}
         </select>
-        <button type="submit" className="btn">Create Nurse</button>
+        <button type="submit" style={submitButtonStyle}>Create Nurse</button>
       </form>
     </div>
   );
+};
+
+const containerStyle = {
+  maxWidth: '450px',
+  margin: '0 auto',
+  padding: '20px',
+  borderRadius: '20px',
+  overflowY: 'scroll',
+  scrollbarWidth: 'none',
+  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  marginTop: '50px',
+  backgroundColor:'#f9f9f9',
+
+};
+
+const headerStyle = {
+  fontSize: '24px',
+  marginBottom: '20px',
+  textAlign: 'center',
+  color: '#1b1b27',
+};
+
+const inputStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  borderRadius: '4px',
+  border: '1px solid #1b1b27',
+  marginBottom: '15px',
+};
+
+const selectStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  borderRadius: '4px',
+  border: '1px solid #1b1b27',
+  marginBottom: '15px',
+};
+
+const submitButtonStyle = {
+  width: '100%',
+  padding: '12px 20px',
+  backgroundColor: '#1b1b27',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontSize: '16px',
+  transition: 'background-color 0.3s ease',
 };
 
 export default CreateNurse;

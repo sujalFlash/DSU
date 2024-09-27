@@ -4,18 +4,17 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const CreateReceptionist = () => {
   const [employeeId, setEmployeeId] = useState('');
   const [name, setName] = useState('');
-  const [deskAssigned, setDeskAssigned] = useState(''); // Added state for deskAssigned
-  const [selectedDepartments, setSelectedDepartments] = useState([]); // Store selected department IDs
+  const [deskAssigned, setDeskAssigned] = useState('');
+  const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [departments, setDepartments] = useState([]);
   const navigate = useNavigate();
+  const [selectedDepartment, setSelectedDepartment] = useState(''); 
   const accessToken = localStorage.getItem('accessToken');
 
-  // Get the user ID passed from the CreateUser component
   const { state } = useLocation();
-  const userid = state?.userId || localStorage.getItem('newUserId'); // Fallback to localStorage if userId is not passed
+  const userid = state?.userId || localStorage.getItem('newUserId');
 
   useEffect(() => {
-    // Fetch department data for the dropdown
     fetch('http://127.0.0.1:8000/api/view_department/', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -28,55 +27,43 @@ const CreateReceptionist = () => {
       .catch(error => console.error('Error fetching departments:', error));
   }, [accessToken]);
 
-  const handleDepartmentChange = (e) => {
-    // Capture selected options and update state
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-    setSelectedDepartments(selectedOptions); // Store selected department IDs
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Preparing the receptionist data to be sent in the API request
     const receptionistData = {
-      user_id: userid, // Ensure user_id is not null
+      user_id: userid,
       employee_id: employeeId,
       name: name,
-      departments: selectedDepartments.map(deptId => parseInt(deptId)), // Convert department IDs to integers
-      desk_assigned: deskAssigned, // Include deskAssigned in the API request
+      departments: selectedDepartments.map(deptId => parseInt(deptId)),
+      desk_assigned: deskAssigned,
     };
 
     try {
-      // Sending the POST request to create a receptionist
       const response = await fetch('http://127.0.0.1:8000/api/create_customUser/add_reception_staff/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(receptionistData), // Send receptionist data as JSON
+        body: JSON.stringify(receptionistData),
       });
 
-      // Check if the response is not successful
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error response from server:", errorData); // Log the error details
         const errorMessage = errorData.message || 'Failed to create receptionist';
-        throw new Error(errorMessage); // Throw a more descriptive error
+        throw new Error(errorMessage);
       }
 
-      // Handle successful response
       alert('Receptionist created successfully!');
-      navigate('/view-receptionist'); // Redirect after receptionist creation
+      navigate('/view-receptionist');
     } catch (err) {
-      console.error('Error creating receptionist:', err.message || err); // Log the error
-      alert(`Failed to create receptionist: ${err.message || 'Unknown error'}`); // Show error to the user
+      alert(`Failed to create receptionist: ${err.message || 'Unknown error'}`);
     }
   };
 
   return (
-    <div className="create-receptionist-container">
-      <h2>Create Receptionist</h2>
+    <div style={containerStyle}>
+      <h2 style={headerStyle}>Create Receptionist</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -84,6 +71,7 @@ const CreateReceptionist = () => {
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}
           required
+          style={inputStyle}
         />
         <input
           type="text"
@@ -91,30 +79,81 @@ const CreateReceptionist = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          style={inputStyle}
         />
         <input
           type='text'
           placeholder='Desk Assigned'
           value={deskAssigned}
-          onChange={(e)=> setDeskAssigned(e.target.value)} // Updated to set deskAssigned
+          onChange={(e) => setDeskAssigned(e.target.value)}
           required
+          style={inputStyle}
         />
-        <select
-          multiple // Allow multiple selections
-          value={selectedDepartments} // Bind the state array to the selected values
-          onChange={handleDepartmentChange} // Handle multiple selections
+       <select
+          value={selectedDepartment}
+          onChange={(e) => setSelectedDepartment(e.target.value)}
           required
+          style={selectStyle}
         >
+          <option value="">Select Department</option>
           {departments.map((dept) => (
             <option key={dept.id} value={dept.id}>
               {dept.name}
             </option>
           ))}
         </select>
-        <button type="submit" className="btn">Create Receptionist</button>
+        <button type="submit" style={submitButtonStyle}>Create Receptionist</button>
       </form>
     </div>
   );
+};
+
+const containerStyle = {
+  maxWidth: '450px',
+  margin: '0 auto',
+  padding: '20px',
+  borderRadius: '20px',
+  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  marginTop: '50px',
+  backgroundColor:'#f9f9f9',
+};
+
+const headerStyle = {
+  fontSize: '24px',
+  marginBottom: '20px',
+  textAlign: 'center',
+  color: '#1b1b27',
+};
+
+const inputStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  borderRadius: '4px',
+  border: '1px solid #1b1b27',
+  marginBottom: '15px',
+};
+
+const selectStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  borderRadius: '4px',
+  border: '1px solid #1b1b27',
+  marginBottom: '15px',
+};
+
+const submitButtonStyle = {
+  width: '100%',
+  padding: '12px 20px',
+  backgroundColor: '#1b1b27',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontSize: '16px',
+  transition: 'background-color 0.3s ease',
 };
 
 export default CreateReceptionist;

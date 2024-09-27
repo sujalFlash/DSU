@@ -32,7 +32,8 @@
   label {
     display: block;
     margin-bottom: 5px;
-    color: navy; /* Change label text color to navy blue */
+    color: #1b1b27; 
+    font-weight: 500;
   }
   
   input {

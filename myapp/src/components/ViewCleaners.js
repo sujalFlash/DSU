@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-
+import './ViewCleaners.css'; // Import the CSS file
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
 
@@ -52,7 +52,6 @@ const ViewCleaners = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error deleting cleaner:", errorData);
         throw new Error(errorData.message || 'Failed to delete cleaner');
       }
 
@@ -70,9 +69,6 @@ const ViewCleaners = () => {
       return;
     }
 
-    console.log('Updating cleaner with ID:', editingCleaner.id);
-    console.log('Updated data:', updatedCleaner);
-
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/cleaner_update/${editingCleaner.id}/`, {
         method: 'PATCH',
@@ -85,7 +81,6 @@ const ViewCleaners = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error updating cleaner:", errorData);
         throw new Error(errorData.message || 'Failed to update cleaner');
       }
 
@@ -111,7 +106,6 @@ const ViewCleaners = () => {
       [name]: name === 'is_in_hospital' || name === 'on_duty' ? value === 'true' : value, // Ensure boolean values are properly handled
     });
   };
- 
 
   if (loading) {
     return <div>Loading...</div>;
@@ -122,12 +116,12 @@ const ViewCleaners = () => {
   }
 
   return (
-    <div className="view-cleaners-container" style={{ overflowY: 'scroll', padding: '20px', height: '100vh' }}>
+    <div className="view-cleaners-container">
       <h2>Cleaners List</h2>
       {cleaners.length > 0 ? (
-        <ul style={{ listStyleType: 'none', padding: 0 }}>
+        <ul className="cleaners-list">
           {cleaners.map((cleaner) => (
-            <li key={cleaner.id} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px' }}>
+            <li key={cleaner.id} className="cleaner-item">
               <h3>{cleaner.name || 'N/A'}</h3>
               <p><strong>ID:</strong> {cleaner.id}</p>
               <p><strong>Department Name:</strong> {cleaner.departments && cleaner.departments[0]?.name || 'N/A'}</p>
@@ -139,12 +133,13 @@ const ViewCleaners = () => {
               <p><strong>In Hospital:</strong> {cleaner.is_in_hospital ? 'Yes' : 'No'}</p>
               <p><strong>On Duty:</strong> {cleaner.on_duty ? 'Yes' : 'No'}</p>
               <div className="cleaner-actions">
-                <button onClick={() => { setEditingCleaner(cleaner); setUpdatedCleaner(cleaner); }} style={{ backgroundColor: 'blue', color: 'white', marginRight: '10px' }}>
-                  Update
-                </button>
-                <button onClick={() => handleDelete(cleaner.id)} style={{ backgroundColor: 'red', color: 'white' }}>
+              <button onClick={() => handleDelete(cleaner.id)} className="delete-btn">
                   Delete
                 </button>
+                <button onClick={() => { setEditingCleaner(cleaner); setUpdatedCleaner(cleaner); }} className="update-btn">
+                  Update
+                </button>
+          
               </div>
             </li>
           ))}
@@ -157,38 +152,26 @@ const ViewCleaners = () => {
       <Modal
         isOpen={!!editingCleaner}
         onRequestClose={() => setEditingCleaner(null)}
-        style={{
-          content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
-            width: '400px',
-            padding: '20px',
-            borderRadius: '10px',
-          },
-        }}
+        className="modal-content"
+        overlayClassName="modal-overlay"
       >
         <h2>Update Cleaner</h2>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
+        <label>
           Area Assigned:
           <input
             type="text"
             name="area_assigned"
             value={updatedCleaner.area_assigned || ''}
             onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
             required
           />
         </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
+        <label>
           Shift:
           <select
             name="shift"
             value={updatedCleaner.shift || ''}
             onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
             required
           >
             <option value="">Select</option>
@@ -197,13 +180,12 @@ const ViewCleaners = () => {
             <option value="Rotating">Rotating</option>
           </select>
         </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
+        <label>
           Status:
           <select
             name="status"
             value={updatedCleaner.status || ''}
             onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
             required
           >
             <option value="">Select</option>
@@ -212,26 +194,24 @@ const ViewCleaners = () => {
             <option value="on_leave">On Leave</option>
           </select>
         </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
+        <label>
           In Hospital:
           <select
             name="is_in_hospital"
-            value={updatedCleaner.is_in_hospital }
+            value={updatedCleaner.is_in_hospital}
             onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
           >
             <option value="">Select</option>
             <option value={true}>Yes</option>
             <option value={false}>No</option>
           </select>
         </label>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
+        <label>
           On Duty:
           <select
             name="on_duty"
             value={updatedCleaner.on_duty}
             onChange={handleChange}
-            style={{ display: 'block', width: '100%', marginTop: '5px' }}
             required
           >
             <option value="">Select</option>
@@ -239,10 +219,10 @@ const ViewCleaners = () => {
             <option value={false}>No</option>
           </select>
         </label>
-        <button onClick={handleUpdate} style={{ backgroundColor: 'green', color: 'white', marginRight: '10px' }}>
+        <button onClick={handleUpdate} className="save-btn">
           Save Changes
         </button>
-        <button onClick={() => setEditingCleaner(null)} style={{ backgroundColor: 'grey', color: 'white' }}>
+        <button onClick={() => setEditingCleaner(null)} className="cancel-btn">
           Cancel
         </button>
         {error && <p className="error">{error}</p>}

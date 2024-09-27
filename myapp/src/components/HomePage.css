@@ -21,11 +21,11 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../images/bodyimg1.jpeg');
   background-size: cover;
   background-position: center;
   filter: blur(5px); /* Adjust the blur level */
   z-index: -1; /* Send the pseudo-element behind the main content */
+  color:black;
 }
 
 /* Content container */
@@ -40,7 +40,6 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #020c39; /* Dark blue background */
   padding: 10px 50px;
   color: white;
   position: fixed;
@@ -50,7 +49,7 @@ body::before {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
   height: 60px;
-
+background-color:#1b1b27 ;
 }
 
 .navbar-logo {
@@ -77,7 +76,7 @@ body::before {
 }
 
 .navbar-menu a:hover {
-  color: #00FFB9; /* Green color on hover */
+  color: #3c3939; /* Green color on hover */
 }
 
 /* First Section: AI-Powered Healthcare Solutions */
@@ -95,6 +94,9 @@ body::before {
   margin-bottom: 5rem;
   align-items: center; /* Center children horizontally */
   justify-content: center;
+  color:#1b1b27;
+  background-color: #f9f9f9;
+
 
 }
 
@@ -115,15 +117,16 @@ body::before {
   font-size: 1.2rem;
   margin-bottom: 30px;
   line-height: 1.5;
+  color: #3c3939;
 }
 
 .cta-button,
-.learn-more-button {
-  background-color: #00FFB9;
+.lbutton {
+  background-color: #1b1b27;
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
-  color: #003060;
+  color: white;
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 20px;
@@ -131,8 +134,8 @@ body::before {
 }
 
 .cta-button:hover,
-.learn-more-button:hover {
-  background-color: #00e6a3;
+.lbutton:hover {
+  background-color:#302f2f;
 }
 
 .image-section {
@@ -187,13 +190,13 @@ body::before {
 .number {
   width: 50px;
   height: 30px;
-  border: 2px solid #00FFB9;
+  border: 2px solid #1b1b27;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  color: #00FFB9;
+  color: #1b1b27;
   margin-right: 20px;
 }
 .item-title {
@@ -205,6 +208,7 @@ body::before {
   font-size: 1rem;
   line-height: 1.5;
   margin-top: 5px;
+  color: #3c3939;
 }
 .workflow-container {
   display: flex;
@@ -216,10 +220,11 @@ body::before {
   height: 50vh;
   border-radius: 40px;
   margin: 5rem auto;  
-  background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
+  background-color: #f9f9f9;
+
   
 }
 
@@ -227,7 +232,7 @@ body::before {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
-  color: #fff; /* Adjust color if needed */
+  color: #1b1b27; /* Adjust color if needed */
   margin-bottom: 3rem;
 }
 
@@ -244,8 +249,8 @@ body::before {
   border-radius: 8px;
   width: 30%; /* Adjust width to fit cards */
   text-align: center;
-  color: #fff; /* Adjust color if needed */
-  border: 2px solid #00FFB9;
+  color: #1b1b27; /* Adjust color if needed */
+  border: 2px solid #3c3939;
 }
 
 .workflow-card h3 {
@@ -267,17 +272,18 @@ body::before {
   height: 50vh;
   margin: 5rem auto;
   justify-content: center;
-  background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
+  background-color: #f9f9f9;
+
 }
 
 .focus-title {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
-  color: #fff; /* Adjust color if needed */
+  color: #1b1b27; /* Adjust color if needed */
   margin-bottom: 3rem;
 }
 
@@ -295,18 +301,19 @@ body::before {
   border-radius: 8px;
   width: 30%; /* Adjust width to fit cards */
   text-align: center;
-  border: 2px solid #00FFB9; /* Green border */
-  color: #fff; /* Adjust text color if needed */
+  border: 2px solid #3c3939; /* Green border */
 }
 
 .focus-card h3 {
   margin-bottom: 10px;
   font-size: 18px;
+  color:#1b1b27;
 }
 
 .focus-card p {
   font-size: 14px;
   line-height: 1.5;
+  color: #3c3939;
 }
 
 .analysis-container {
@@ -318,17 +325,18 @@ body::before {
   padding: 0 50px;
   height: 50vh;
   margin: 5rem auto;
-  background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
+  background-color: #f9f9f9;
+
 }
 
 .analysis-title {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
-  color: #fff; /* Adjust color if needed */
+  color: #1b1b1b; /* Adjust color if needed */
   margin-bottom: 3rem;
 }
 
@@ -349,10 +357,10 @@ body::before {
 
 .step-number {
   display: inline-block;
-  background-color: #0d1527;
-  color: #00FFB9;
+  background-color: #1b1b1b;
+  color: #fff;
   padding: 10px;
-  border: 2px solid #00FFB9;
+  border: 2px solid #3c3939;
   border-radius: 15px;
   margin-bottom: 10px;
   font-size: 18px;
@@ -361,18 +369,20 @@ body::before {
 .analysis-step h3 {
   font-size: 18px;
   margin-bottom: 10px;
-  color: #fff; /* Adjust color if needed */
+  color: #1b1b27; /* Adjust color if needed */
 }
 
 .analysis-step p {
   font-size: 14px;
   line-height: 1.5;
-  color: #fff; /* Adjust color if needed */
+  color: #777; /* Adjust color if needed */
 }
 /* XrayReport.css */
 .xray {
 width: 60vw;
-height: 50vh;
+height: 55vh;
+background-color: #f9f9f9;
+
 }
 
 .xray-card {
@@ -397,24 +407,25 @@ height: 50vh;
   right: 0;
   padding: 10px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-  color: white;
+  color: #3c3939;
   font-size: 12px;
   text-align: center;
 }
 
 .xray-analysis {
   color: white;
-  font-family: Arial, sans-serif;
 }
 
 .xray-analysis h1 {
   font-size: 36px;
   margin-bottom: 20px;
+  color: #1b1b27;;
 }
 
 .xray-analysis ul {
   list-style-type: disc;
   padding: 0;
+  color: #3c3939;
 }
 
 .xray-analysis li {
@@ -497,7 +508,7 @@ height: 50vh;
   margin-right: 30px;
   width: 30px;
   height: 30px;
-  color: #00c8ff; /* Customize the icon color */
+  color: #1b1b27; /* Customize the icon color */
 }
 
 .feature h2 {
@@ -556,7 +567,7 @@ height: 50vh;
   margin-right: 10px;
   width: 30px;
   height: 30px;
-  color: #00FFB9; 
+  color: #1b1b27; 
   margin-right: 50px;
 }
 
@@ -570,7 +581,6 @@ height: 50vh;
 }
 
 .card-container {
-  background-color: #0a0e27;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border: 4px solid rgba(255, 255, 255, 0.1);
   border-radius: 40px;
@@ -578,17 +588,19 @@ height: 50vh;
   width: 60vw; /* Set a width similar to the image */
   margin: 20px auto; /* Center align horizontally */
   margin-bottom: 5rem;
+  background-color: #f9f9f9;
+
 }
 
 .card-content h2 {
-  color: white; /* White text color */
+  color: #1b1b27; /* White text color */
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
 .network-info {
-  color: #b0b5c0; /* Lighter text for the subtitle */
+  color: #1b1b27; /* Lighter text for the subtitle */
   font-size: 1rem;
   display: flex;
   align-items: center;
@@ -602,7 +614,7 @@ height: 50vh;
 }
 
 .description {
-  color: #b0b5c0; /* Light gray color for the description */
+  color: #1b1b27; /* Light gray color for the description */
   font-size: 0.95rem;
   line-height: 1.5;
   border-left: 2px solid #b0b5c0; /* Left border for the description */
@@ -610,7 +622,8 @@ height: 50vh;
   margin-top: 10px;
 }
 .arrowicon{
-  color: #00FFB9;
+  color: #1b1b27;
+  margin-right: 3px;
 }
 
 
