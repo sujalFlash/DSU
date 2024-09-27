@@ -25,5 +25,6 @@ urlpatterns = [
     path('',include('patient_management.urls')),
     path('',include('hospital_management.urls')),
     path('',include('ImageAugmentation.urls')),
-    path('',include('ImageProcessing.urls'))
+    path('',include('ImageProcessing.urls')),
+    path('',include('medicine_management.urls'))
 ]
