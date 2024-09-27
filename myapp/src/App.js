@@ -28,6 +28,7 @@ import AddDisease from './components/AddDisease';
 import ImageManagement from './components/ImageManagement';
 import ImageAugmentation from './components/ImageAugmentation';
 import ImageProcessing from './components/ImageProcessing';
+import ViewMedicines from './components/ViewMedicines';
 
 
 
@@ -62,6 +63,7 @@ function App() {
         <Route path="/image-management" element={<ImageManagement />} />
         <Route path="/image-management/augmentation" element={<ImageAugmentation />} />
         <Route path="/image-management/processing" element={<ImageProcessing />} />
+        <Route path="/view-medicines" element={<ViewMedicines />} />
       </Routes>
     </Router>
   );
