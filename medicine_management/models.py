@@ -11,7 +11,6 @@ class Medicines(models.Model):
     manufacturer_company_name = models.CharField(max_length=100)
     manufacturing_date = models.DateField()
     expiry_date = models.DateField()
-    patient = models.ManyToManyField(Patient)
     bill=models.IntegerField(default=0)
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE,default=1)
     def __str__(self):
