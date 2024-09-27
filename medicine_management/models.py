@@ -11,7 +11,9 @@ class Medicines(models.Model):
     manufacturer_company_name = models.CharField(max_length=100)
     manufacturing_date = models.DateField()
     expiry_date = models.DateField()
+    quantity = models.IntegerField(default=0)
     bill=models.IntegerField(default=0)
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE,default=1)
+    is_expired=models.BooleanField(default=False)
     def __str__(self):
         return f"{self.manufacturer_company_name} {self.manufacturer_company_name}"
