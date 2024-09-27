@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'deeplearning',
     'ImageAugmentation',
-    'ImageProcessing'
+    'ImageProcessing',
+    'medicine_management',
 ]
 
 MIDDLEWARE = [
