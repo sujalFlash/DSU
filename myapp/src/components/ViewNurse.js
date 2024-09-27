@@ -148,11 +148,11 @@ const ViewNurse = () => {
                   ? nurse.departments.map((dept) => dept.name).join(', ')
                   : 'N/A'}
               </p>
-              <button className="delete-button" onClick={() => handleDelete(nurse.id)}>
+              <button className="button-delete" onClick={() => handleDelete(nurse.id)}>
                 Delete
               </button>
               <button
-                className="update-button"
+                className="button-update"
                 onClick={() => {
                   setEditingNurse(nurse);
                   setUpdatedNurse(nurse);

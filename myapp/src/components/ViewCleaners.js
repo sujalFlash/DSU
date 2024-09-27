@@ -133,10 +133,10 @@ const ViewCleaners = () => {
               <p><strong>In Hospital:</strong> {cleaner.is_in_hospital ? 'Yes' : 'No'}</p>
               <p><strong>On Duty:</strong> {cleaner.on_duty ? 'Yes' : 'No'}</p>
               <div className="cleaner-actions">
-              <button onClick={() => handleDelete(cleaner.id)} className="delete-btn">
+              <button onClick={() => handleDelete(cleaner.id)} className="button-delete">
                   Delete
                 </button>
-                <button onClick={() => { setEditingCleaner(cleaner); setUpdatedCleaner(cleaner); }} className="update-btn">
+                <button onClick={() => { setEditingCleaner(cleaner); setUpdatedCleaner(cleaner); }} className="button-update">
                   Update
                 </button>
           

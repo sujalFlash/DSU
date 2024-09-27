@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './ViewMedicines.css'; // Import CSS file
 
 const ViewMedicine = () => {
   const [medicines, setMedicines] = useState([]);
@@ -7,7 +8,6 @@ const ViewMedicine = () => {
   const [error, setError] = useState(null);
 
   const accessToken = localStorage.getItem('accessToken');
-  console.log('Access Token:', accessToken); // Ensure this returns the expected token
 
   useEffect(() => {
     const fetchMedicines = async () => {
@@ -18,51 +18,61 @@ const ViewMedicine = () => {
             Authorization: `Bearer ${accessToken}`
           },
         });
-        console.log('API Response:', response.data); // Log the API response
         setMedicines(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching medicines:', error); // Log full error details
         setError(error.response ? error.response.data : error.message);
         setLoading(false);
       }
     };
 
     fetchMedicines();
-  }, [accessToken]); // Ensure useEffect runs when accessToken changes
+  }, [accessToken]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   return (
-    <div>
-      <h1>Medicine List</h1>
+    <div
+    className="medicine-container"
+    style={{
+      height: '100vh',
+      overflowY: 'auto',
+      border: '1px solid #ddd',
+      borderRadius: '8px',
+      position: 'relative', // Make sure this is relative
+      paddingRight: '15px', // To account for scrollbar width
+    }}
+  >
+      <h1 className="mtitle">Medicine List</h1>
       {medicines.length === 0 ? (
-        <p>No medicines available</p>
+        <p className="no-medicines">No medicines available</p>
       ) : (
-        <table>
+        <table className="medicine-table">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Quantity</th>
+              <th>Brand Name</th>
+              <th>Chemical Name</th>
+              <th>Manufacturer</th>
+              <th>Manufacturing Date</th>
+              <th>Expiry Date</th>
             </tr>
           </thead>
           <tbody>
             {medicines.map((medicine) => (
               <tr key={medicine.id}>
                 <td>{medicine.id}</td>
-                <td>{medicine.name}</td>
-                <td>{medicine.description}</td>
-                <td>{medicine.price}</td>
-                <td>{medicine.quantity}</td>
+                <td>{medicine.brand_name}</td>
+                <td>{medicine.chemical_name}</td>
+                <td>{medicine.manufacturer_company_name}</td>
+                <td>{medicine.manufacturing_date}</td>
+                <td>{medicine.expiry_date}</td>
               </tr>
             ))}
           </tbody>

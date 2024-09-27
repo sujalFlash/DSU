@@ -95,7 +95,8 @@
 /* Section Spacing */
 .image-management-container,
 .staff-management-container,
-.patient-management-container {
+.patient-management-container,
+.medicine-management-container {
   margin-bottom: 50px;
   padding: 20px;
 }
@@ -117,7 +118,7 @@
   margin-right: 1.5rem;
   margin-bottom: 1.5rem;
 }
-.image-management-container, .staff-management-container, .patient-management-container{
+.image-management-container, .staff-management-container, .patient-management-container,.medicine-management-container{
   background-color: #f9f9f9;
 
 }

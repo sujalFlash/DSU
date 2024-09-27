@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Manager Dashboard</h1>
+        <h1 className="dashboard-title">Dashboard</h1>
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </div>
 
@@ -47,6 +47,17 @@ const Dashboard = () => {
             <Link to="/disease-history" className="btn">View Disease History</Link>
           </div>
         </div>
+
+
+        <div className="medicine-management-container">
+          <h2>Medicine Management</h2>
+          <div className="action-buttons">
+            <Link to="/view-medicines" className="btn">View Medicines</Link>
+            <Link to="/source-medicine" className="btn">Source Medicine</Link>
+          </div>
+        </div>
+
+
       </div>
     </div>
   );

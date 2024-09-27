@@ -156,3 +156,16 @@
   color: red;
   text-align: center;
 }
+.button-delete {
+  background-color: #db3630;
+  margin-right: 10px;
+}
+
+.button-update {
+  background-color: #4bbadc;
+}
+.button-delete:hover{background-color:rgb(246, 46, 46) ;}
+.button-update:hover{background-color:#33b5dd;}
+.button-save {
+  background-color: #2fd62f;
+}

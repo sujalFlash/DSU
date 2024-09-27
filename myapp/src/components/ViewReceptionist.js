@@ -124,7 +124,7 @@ const ViewReceptionist = () => {
               <p><strong>Status:</strong> {receptionist.status || 'N/A'}</p>
               <p><strong>In Hospital: </strong>{receptionist.is_in_hospital ? 'Yes' : 'No'}</p>
               <p><strong>On Duty:</strong> {receptionist.on_duty ? 'Yes' : 'No'}</p>
-              <button onClick={() => handleDelete(receptionist.id)} className="delete-button">
+              <button onClick={() => handleDelete(receptionist.id)} className="button-delete">
                 Delete
               </button>
               <button
@@ -132,7 +132,7 @@ const ViewReceptionist = () => {
                   setEditingReceptionist(receptionist);
                   setUpdatedReceptionist(receptionist);
                 }}
-                className="update-button"
+                className="button-update"
               >
                 Update
               </button>
